@@ -5,6 +5,6 @@ export interface Mapper<
   Schema extends IdentifiableSchema,
   Entity extends EntityClass,
 > {
-  toSchema(domainEntity: Entity): Schema;
+  toSchema(entity: Entity): Schema;
   toDomain(schema: Schema): Entity;
 }

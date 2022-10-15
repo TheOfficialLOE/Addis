@@ -4,8 +4,8 @@ import { IdentifiableSchema } from "./IdentifiableSchema";
 import { Entity as EntityClass } from "../ddd/BaseEntity";
 
 export abstract class Repository<
-  Schema extends IdentifiableSchema,
-  Entity extends EntityClass,
+  Schema extends IdentifiableSchema = IdentifiableSchema,
+  Entity extends EntityClass = EntityClass,
 > {
   protected constructor(
     protected readonly model: Model<Schema>,
