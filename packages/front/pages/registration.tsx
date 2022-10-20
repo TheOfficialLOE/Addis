@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from "react";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,20 +11,41 @@ enum Status {
 
 const Registration = () => {
   const [status, setStatus] = useState<Status>(null);
+  const emailInput = useRef(null);
+  const otpInput = useRef(null);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     switch(status) {
       case Status.Sent: {
         setStatus(Status.WaitingToVerify);
+        const email: string = emailInput.current.value;
+        const code: string = otpInput.current.value;
+        fetch(`http://localhost:3001/auth?email=${email}&code=${code}`).then(response => {
+          response.text().then(text => {
+            console.log(text);
+          });
+          setStatus(Status.Sent);
+        })
         break;
       }
       default: {
         setStatus(Status.WaitingToSend);
-        setTimeout(() => {
-          setStatus(Status.Sent);
-          toast.success("Please check your inbox.");
-        }, 1000);
+        const email: string = emailInput.current.value;
+        fetch("http://localhost:3001/auth", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email
+          })
+        }).then(response => {
+          if (response.ok) {
+            setStatus(Status.Sent);
+            toast.success("Please check your inbox");
+          }
+        });
         break;
       }
     }
@@ -42,12 +63,14 @@ const Registration = () => {
               type="email"
               placeholder="Email"
               className="input input-primary w-full"
+              ref={emailInput}
             />
             { (status === Status.Sent || status === Status.WaitingToVerify ) && (
               <input
                 type="number"
                 placeholder="OTP"
                 className="input input-primary mt-4 w-full"
+                ref={otpInput}
               ></input>
             ) }
             <button

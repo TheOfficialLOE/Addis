@@ -1,4 +1,4 @@
-import { Body, Controller, Get } from "@nestjs/common";
+import { Controller, Get, Query } from "@nestjs/common";
 import { VerifyCodeUseCaseImpl } from "./VerifyCodeUseCaseImpl";
 
 @Controller("auth")
@@ -6,12 +6,11 @@ export class VerifyCodeController {
   constructor(private readonly verifyCodeUseCase: VerifyCodeUseCaseImpl) {}
 
   @Get()
-  public async execute(@Body() body: { email: string; code: number }) {
-    const result = await this.verifyCodeUseCase.execute({
-      email: body.email,
-      code: body.code,
+  public async execute(@Query("email") email: string, @Query("code") code: number) {
+    await this.verifyCodeUseCase.execute({
+      email: email,
+      code: code,
     });
-    if (result) return "Logged in!";
-    return "Wrong credentials";
+    return "Logged in!";
   }
 }

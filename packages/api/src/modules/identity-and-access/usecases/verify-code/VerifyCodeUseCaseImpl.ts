@@ -10,10 +10,10 @@ export class VerifyCodeUseCaseImpl implements VerifyCodeUseCase {
     email: string;
     code: number;
   }): Promise<boolean> {
-    const result = await this.repository.find({
+    const result = await this.repository.findOne({
       issuedEmail: payload.email,
       code: payload.code,
     });
-    if (result.length) return true;
+    if (result) return true;
   }
 }
