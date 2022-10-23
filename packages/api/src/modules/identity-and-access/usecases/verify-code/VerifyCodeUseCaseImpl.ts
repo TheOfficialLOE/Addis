@@ -5,6 +5,8 @@ import { UserRepository } from "../../database/UserRepository";
 import { UserEntity } from "../../domain/UserEntity";
 import { CoreAssert } from "../../../../core/CoreAssert";
 import { JwtService } from "@nestjs/jwt";
+import { Exception } from "../../../../core/Exception";
+import { Code } from "../../../../core/Code";
 
 @Injectable()
 export class VerifyCodeUseCaseImpl implements VerifyCodeUseCase {
@@ -23,7 +25,7 @@ export class VerifyCodeUseCaseImpl implements VerifyCodeUseCase {
         issuedEmail: payload.email,
         code: payload.code,
       }),
-      new Error("Otp not found.")
+      Exception.new({ code: Code.NOT_FOUND_ERROR, overrideMessage: "OTP not found." })
     );
     otp.verify();
     const user = await this.userRepository.findOne({ email: payload.email });

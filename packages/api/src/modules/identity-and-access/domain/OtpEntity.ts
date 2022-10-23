@@ -31,6 +31,7 @@ export class OtpEntity extends Entity<OtpEntityProps> {
   public verify(): void {
     const now = new Date();
     const generatedAt = new Date(this.generatedAt);
+    /// todo: serious bug!!!
     if (now.getMinutes() - generatedAt.getMinutes() > 15)
       throw new Error("Invalid OTP.");
   }
