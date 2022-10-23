@@ -3,7 +3,7 @@ import { Entity } from "../../../core/ddd/BaseEntity";
 interface OtpEntityProps {
   code: number;
   issuedEmail: string;
-  generatedAt: Date;
+  generatedAt: number;
 }
 
 export class OtpEntity extends Entity<OtpEntityProps> {
@@ -11,7 +11,7 @@ export class OtpEntity extends Entity<OtpEntityProps> {
     const props: OtpEntityProps = {
       code: Math.floor(Math.random() * 9999 - 1001) + 1000,
       issuedEmail: email,
-      generatedAt: new Date(),
+      generatedAt: Date.now(),
     };
     return new OtpEntity({ props });
   }
@@ -24,7 +24,14 @@ export class OtpEntity extends Entity<OtpEntityProps> {
     return this.props.issuedEmail;
   }
 
-  get generatedAt(): Date {
+  get generatedAt(): number {
     return this.props.generatedAt;
+  }
+
+  public verify(): void {
+    const now = new Date();
+    const generatedAt = new Date(this.generatedAt);
+    if (now.getMinutes() - generatedAt.getMinutes() > 15)
+      throw new Error("Invalid OTP.");
   }
 }

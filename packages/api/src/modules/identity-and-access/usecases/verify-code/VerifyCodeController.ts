@@ -1,16 +1,16 @@
-import { Controller, Get, Query } from "@nestjs/common";
+import { Body, Controller, Post } from "@nestjs/common";
 import { VerifyCodeUseCaseImpl } from "./VerifyCodeUseCaseImpl";
 
+// todo: route name needs to be changed
 @Controller("auth")
 export class VerifyCodeController {
   constructor(private readonly verifyCodeUseCase: VerifyCodeUseCaseImpl) {}
 
-  @Get()
-  public async execute(@Query("email") email: string, @Query("code") code: number) {
-    await this.verifyCodeUseCase.execute({
-      email: email,
-      code: code,
+  @Post("verify")
+  public async execute(@Body() body: { email: string, code: number }) {
+    return await this.verifyCodeUseCase.execute({
+      email: body.email,
+      code: body.code,
     });
-    return "Logged in!";
   }
 }

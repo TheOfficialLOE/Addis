@@ -2,6 +2,8 @@ import React, { useRef, useState } from "react";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { setCookie } from "cookies-next";
+import { useRouter } from "next/router";
 
 enum Status {
   WaitingToSend,
@@ -13,6 +15,7 @@ const Registration = () => {
   const [status, setStatus] = useState<Status>(null);
   const emailInput = useRef(null);
   const otpInput = useRef(null);
+  const router = useRouter();
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,11 +24,24 @@ const Registration = () => {
         setStatus(Status.WaitingToVerify);
         const email: string = emailInput.current.value;
         const code: string = otpInput.current.value;
-        fetch(`http://localhost:3001/auth?email=${email}&code=${code}`).then(response => {
-          response.text().then(text => {
-            console.log(text);
-          });
-          setStatus(Status.Sent);
+        fetch("http://localhost:3001/auth/verify", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+            code
+          })
+        }).then(response => {
+          if (response.ok) {
+            response.text().then(text => {
+              setCookie("jwt", text);
+              setStatus(Status.Sent);
+              toast.success("Logged in.");
+              // router.push("/");
+            })
+          }
         })
         break;
       }

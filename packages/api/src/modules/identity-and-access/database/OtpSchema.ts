@@ -10,5 +10,5 @@ export class OtpSchema extends IdentifiableSchema {
   issuedEmail: string;
 
   @Prop()
-  generatedAt: Date;
+  generatedAt: number;
 }

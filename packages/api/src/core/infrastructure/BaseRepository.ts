@@ -24,8 +24,9 @@ export abstract class Repository<
       {},
       { lean: true },
     );
-    if (!entityDocument) throw new Error("Entity was not found.");
-    return this.mapper.toDomain(entityDocument);
+    // if (!entityDocument) throw new Error("Entity was not found.");
+    if (entityDocument)
+      return this.mapper.toDomain(entityDocument);
   }
 
   public async find(
