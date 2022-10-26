@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { FetchAPI } from "../util/FetchAPI";
 
 enum Status {
+  Initial,
   WaitingToSend,
   Sent,
   WaitingToVerify,
@@ -14,14 +15,14 @@ enum Status {
 
 const Registration = () => {
 
-  const [status, setStatus] = useState<Status>(null);
+  const [status, setStatus] = useState<Status>(Status.Initial);
   const emailInput = useRef(null);
   const otpInput = useRef(null);
   const router = useRouter();
   const fetchAPI = new FetchAPI();
 
   const backButtonOnClick = () => {
-    setStatus(null);
+    setStatus(Status.Initial);
   }
 
   const onSubmit = (e: React.FormEvent) => {
