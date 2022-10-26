@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/router";
+import { FetchAPI } from "../util/FetchAPI";
 
 enum Status {
   WaitingToSend,
@@ -12,10 +13,12 @@ enum Status {
 }
 
 const Registration = () => {
+
   const [status, setStatus] = useState<Status>(null);
   const emailInput = useRef(null);
   const otpInput = useRef(null);
   const router = useRouter();
+  const fetchAPI = new FetchAPI();
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,44 +27,39 @@ const Registration = () => {
         setStatus(Status.WaitingToVerify);
         const email: string = emailInput.current.value;
         const code: string = otpInput.current.value;
-        fetch("http://localhost:3001/auth/verify", {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
+        fetchAPI.post<string>({
+          endPoint: "auth/verify",
+          body: {
             email,
             code
-          })
-        }).then(response => {
-          if (response.ok) {
-            response.text().then(text => {
-              setCookie("jwt", text);
-              setStatus(Status.Sent);
-              toast.success("Logged in.");
-              // router.push("/");
-            })
           }
+        }).then(response => {
+          if (response.code === 200) {
+            setCookie("jwt", response.data);
+            toast.success("Logged in.");
+          }
+          else {
+            toast.error(response.message);
+          }
+        }).finally(() => {
+          setStatus(Status.Sent);
         })
         break;
       }
       default: {
         setStatus(Status.WaitingToSend);
         const email: string = emailInput.current.value;
-        fetch("http://localhost:3001/auth", {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
+        fetchAPI.post<string>({
+          endPoint: "auth",
+          body: {
             email
-          })
+          }
         }).then(response => {
-          if (response.ok) {
+          if (response.code === 200) {
             setStatus(Status.Sent);
             toast.success("Please check your inbox");
           }
-        });
+        })
         break;
       }
     }

@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from "@nestjs/common";
 import { RequestCodeUseCaseImpl } from "./RequestCodeUseCaseImpl";
-import { CoreApiResponse } from "../../../../core/CoreApiResponse";
+import { CoreApiResponse } from "@api/core/CoreApiResponse";
 
 // todo: route name needs to be changed
 @Controller("auth")

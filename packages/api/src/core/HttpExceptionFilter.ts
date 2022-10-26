@@ -1,6 +1,5 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, UnauthorizedException } from "@nestjs/common";
+import { ArgumentsHost, Catch, ExceptionFilter } from "@nestjs/common";
 import { CoreApiResponse } from "./CoreApiResponse";
-import { Code } from "./Code";
 import { Exception } from "./Exception";
 import { Response } from 'express';
 
@@ -20,4 +19,3 @@ export class HttpExceptionFilter implements ExceptionFilter {
     response.json("error bro")
   }
 }
-
