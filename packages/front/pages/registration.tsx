@@ -20,6 +20,10 @@ const Registration = () => {
   const router = useRouter();
   const fetchAPI = new FetchAPI();
 
+  const backButtonOnClick = () => {
+    setStatus(null);
+  }
+
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     switch(status) {
@@ -66,9 +70,15 @@ const Registration = () => {
   };
 
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="h-screen flex justify-center items-center relative">
       <div className="card bg-neutral w-96 mx-8">
         <div className="card-body w-full items-center">
+          { status === Status.Sent && <div className="btn btn-ghost btn-square absolute left-8 top-6" onClick={backButtonOnClick}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                 stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+          </div> }
           <h2 className="card-title">
             { (status === Status.Sent || status === Status.WaitingToVerify ) ? 'Enter OTP' : 'Enter Your Email'}
           </h2>
