@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/router";
+import { io } from "socket.io-client";
 
 const Index = () => {
   const router = useRouter();
@@ -10,6 +11,12 @@ const Index = () => {
     if (!token)
       router.push("/registration");
   }, [router, token]);
+
+  const socket = io("http://localhost:3001", {
+    auth: {
+      token
+    }
+  });
 
   return <div className="h-screen">
     <div className="grid grid-cols-[min-content_auto] grid-flow-dense h-full">
