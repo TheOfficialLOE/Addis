@@ -40,8 +40,9 @@ const Registration = () => {
           }
         }).then(response => {
           if (response.code === 200) {
-            setCookie("jwt", response.data);
-            toast.success("Logged in.");
+            setCookie("token", response.data);
+            // toast.success("Logged in.");
+            router.push("/");
           }
           else {
             toast.error(response.message);

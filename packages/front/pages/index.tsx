@@ -1,4 +1,16 @@
+import { useEffect } from "react";
+import { getCookie } from "cookies-next";
+import { useRouter } from "next/router";
+
 const Index = () => {
+  const router = useRouter();
+  const token = getCookie("token");
+
+  useEffect(() => {
+    if (!token)
+      router.push("/registration");
+  }, [router, token]);
+
   return <div className="h-screen">
     <div className="grid grid-cols-[min-content_auto] grid-flow-dense h-full">
       <ul className="w-96 bg-neutral p-4">
