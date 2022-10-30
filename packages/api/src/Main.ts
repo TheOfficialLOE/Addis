@@ -5,9 +5,11 @@ import { GatewayAdapter } from "./modules/gateway/GatewayAdapter";
 import { HttpExceptionFilter } from "./core/HttpExceptionFilter";
 import { UserRepository } from "@api/modules/identity-and-access/database/UserRepository";
 import { JwtService } from "@nestjs/jwt";
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use(cookieParser())
   app.useGlobalFilters(new HttpExceptionFilter());
   const adapter = new GatewayAdapter(app, app.get(JwtService), app.get(UserRepository));
   app.useWebSocketAdapter(adapter);
