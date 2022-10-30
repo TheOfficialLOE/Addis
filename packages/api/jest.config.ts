@@ -2,6 +2,7 @@
 export default {
   displayName: 'api',
   preset: '../../jest.preset.js',
+  globalSetup: './jest.setup.ts',
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',

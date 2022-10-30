@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common";
 import { RequestCodeController } from "./usecases/request-code/RequestCodeController";
-import { Mailer } from "../../infrastructure/Mailer";
 import { RequestCodeUseCaseImpl } from "./usecases/request-code/RequestCodeUseCaseImpl";
 import { OtpRepository } from "./database/OtpRepository";
 import { OtpMapper } from "./database/OtpMapper";
@@ -25,7 +24,6 @@ import { JwtModule } from "@nestjs/jwt";
   ],
   controllers: [RequestCodeController, VerifyCodeController],
   providers: [
-    Mailer,
     RequestCodeUseCaseImpl,
     VerifyCodeUseCaseImpl,
     OtpRepository,
