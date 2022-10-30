@@ -1,4 +1,4 @@
-import { Mapper } from "../../../core/ddd/Mapper";
+import { Mapper } from "@api/core/ddd/Mapper";
 import { OtpSchema } from "./OtpSchema";
 import { OtpEntity } from "../domain/OtpEntity";
 import { Types } from "mongoose";
@@ -9,7 +9,11 @@ export class OtpMapper implements Mapper<OtpSchema, OtpEntity> {
   toDomain(schema: OtpSchema): OtpEntity {
     return new OtpEntity({
       id: schema._id.toHexString(),
-      props: { ...schema },
+      props: {
+        code: schema.code,
+        issuedEmail: schema.issuedEmail,
+        generatedAt: schema.generatedAt,
+      },
     });
   }
 

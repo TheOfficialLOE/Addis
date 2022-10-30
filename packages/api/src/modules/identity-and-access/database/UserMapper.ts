@@ -1,4 +1,4 @@
-import { Mapper } from "../../../core/ddd/Mapper";
+import { Mapper } from "@api/core/ddd/Mapper";
 import { UserSchema } from "./UserSchema";
 import { UserEntity } from "../domain/UserEntity";
 import { Injectable } from "@nestjs/common";
@@ -9,7 +9,10 @@ export class UserMapper implements Mapper<UserSchema, UserEntity> {
   public toDomain(schema: UserSchema): UserEntity {
     return new UserEntity({
       id: schema._id.toHexString(),
-      props: { ...schema }
+      props: {
+        email: schema.email,
+        username: schema.username,
+      }
     });
   }
 

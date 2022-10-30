@@ -10,13 +10,13 @@ const Index = () => {
   useEffect(() => {
     if (!token)
       router.push("/registration");
-  }, [router, token]);
 
-  const socket = io("http://localhost:3001", {
-    auth: {
-      token
-    }
-  });
+    const socket = io("http://localhost:3001", {
+      auth: {
+        token
+      }
+    });
+  }, [router, token]);
 
   return <div className="h-screen">
     <div className="grid grid-cols-[min-content_auto] grid-flow-dense h-full">

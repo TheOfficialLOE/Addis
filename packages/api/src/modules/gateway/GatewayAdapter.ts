@@ -21,6 +21,15 @@ export class GatewayAdapter extends IoAdapter {
   createIOServer(port: number, options?: any): Server {
     const server: Server = super.createIOServer(port, options);
     server.use(async (socket: AuthenticatedSocket, next) => {
+      const token = socket.handshake.auth.token;
+      if (!token)
+        throw "Token must be provided.";
+      const { email } = await this.jwtService.verifyAsync(token);
+      const user = await this.userRepository.findOne({ email });
+      if (!user)
+        throw "User not found.";
+      console.log(user);
+      socket.user = user;
       next();
     });
     return server;
