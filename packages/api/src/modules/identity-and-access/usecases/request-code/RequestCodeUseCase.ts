@@ -1,3 +1,3 @@
-import { UseCase } from "../../../../core/ddd/UseCase";
+import { UseCase } from "@api/core/ddd/UseCase";
 
 export interface RequestCodeUseCase extends UseCase<string, void> {}

@@ -3,10 +3,10 @@ import { Injectable } from "@nestjs/common";
 import { OtpRepository } from "../../database/OtpRepository";
 import { UserRepository } from "../../database/UserRepository";
 import { UserEntity } from "../../domain/UserEntity";
-import { CoreAssert } from "../../../../core/CoreAssert";
+import { CoreAssert } from "@api/core/CoreAssert";
 import { JwtService } from "@nestjs/jwt";
-import { Exception } from "../../../../core/Exception";
-import { Code } from "../../../../core/Code";
+import { Exception } from "@api/core/Exception";
+import { Code } from "@api/core/Code";
 
 @Injectable()
 export class VerifyCodeUseCaseImpl implements VerifyCodeUseCase {
