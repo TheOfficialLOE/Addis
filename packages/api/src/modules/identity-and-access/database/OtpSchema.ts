@@ -1,5 +1,5 @@
 import { Prop, Schema } from "@nestjs/mongoose";
-import { IdentifiableSchema } from "../../../core/infrastructure/IdentifiableSchema";
+import { IdentifiableSchema } from "@api/core/infrastructure/IdentifiableSchema";
 
 @Schema({ collection: "otps" })
 export class OtpSchema extends IdentifiableSchema {

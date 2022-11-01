@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Repository } from "../../../core/infrastructure/BaseRepository";
+import { Repository } from "@api/core/infrastructure/BaseRepository";
 import { OtpSchema } from "./OtpSchema";
 import { OtpEntity } from "../domain/OtpEntity";
 import { InjectModel } from "@nestjs/mongoose";
