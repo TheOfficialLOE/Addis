@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { Repository } from "@api/core/infrastructure/BaseRepository";
 import { UserSchema } from "./UserSchema";
 import { UserEntity } from "../domain/UserEntity";
-import { UserMapper } from "./UserMapper";
+import { UserMapper } from "@api/modules/identity-and-access/database/UserMapper";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 
