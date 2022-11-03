@@ -1,6 +1,6 @@
 import { RequestCodeUseCase } from "./RequestCodeUseCase";
 import { Mailer } from "@api/infrastructure/Mailer";
-import { OtpRepository } from "../../database/OtpRepository";
+import { OtpRepository } from "@api/modules/identity-and-access/database/OtpRepository";
 import { Injectable } from "@nestjs/common";
 import { OtpEntity } from "../../domain/OtpEntity";
 import { ApiKeys } from "@api/infrastructure/ApiKeys";

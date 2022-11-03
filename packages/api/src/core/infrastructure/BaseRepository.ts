@@ -13,6 +13,7 @@ export abstract class Repository<
   ) {}
 
   public async create(entity: Entity): Promise<void> {
+    /// todo: entity can't be null
     await new this.model(this.mapper.toSchema(entity)).save();
   }
 
