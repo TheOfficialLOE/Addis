@@ -1,7 +1,7 @@
 import { VerifyCodeUseCase } from "./VerifyCodeUseCase";
 import { Injectable } from "@nestjs/common";
-import { OtpRepository } from "../../database/OtpRepository";
-import { UserRepository } from "../../database/UserRepository";
+import { OtpRepository } from "@api/modules/identity-and-access/database/OtpRepository";
+import { UserRepository } from "@api/modules/identity-and-access/database/UserRepository";
 import { UserEntity } from "../../domain/UserEntity";
 import { CoreAssert } from "@api/core/CoreAssert";
 import { JwtService } from "@nestjs/jwt";
