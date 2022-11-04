@@ -51,4 +51,11 @@ describe("VerifyCode", () => {
     jest.spyOn(userRepository, "findOne").mockResolvedValue(UserEntity.new("kh"));
     await verifyCodeUseCase.execute({ email: "kh", code: 1234 });
   });
+
+  it("should throw when otp not found", async () => {
+    jest.spyOn(otpRepository, "findOne").mockResolvedValue(undefined);
+    await expect(async () => {
+      await verifyCodeUseCase.execute({ email: "kh", code: 1234 });
+    }).rejects.toThrow();
+  });
 });
