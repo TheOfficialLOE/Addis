@@ -23,7 +23,7 @@ export class RequestCodeUseCaseImpl implements RequestCodeUseCase {
       host: ApiKeys.MAIL_HOST,
       auth: {
         user: ApiKeys.MAIL_USER,
-        pass: ApiKeys.MAIL_USER,
+        pass: ApiKeys.MAIL_PASS,
       },
     });
   }

@@ -16,6 +16,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
         );
       return;
     }
-    response.json("error bro")
+    console.log(error);
+    response.
+      status(500)
+      .json({
+        status: 500,
+        message: "Internal Server Error"
+      })
   }
 }
