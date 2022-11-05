@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { io } from "socket.io-client";
+import axios from "axios";
 
 const Index = () => {
   const router = useRouter();
@@ -11,12 +12,22 @@ const Index = () => {
     if (!token)
       router.push("/registration");
 
-    const socket = io("http://localhost:3001", {
-      auth: {
-        token
-      }
-    });
+    // const socket = io("http://localhost:3001", {
+    //   auth: {
+    //     token
+    //   }
+    // });
   }, [router, token]);
+
+  const clickHandler = () => {
+    axios.post("http://localhost:3001/test")
+      .catch(err => {
+      console.log(err.response.data.status, err.response.data.message);
+    })
+      .then(response => {
+      console.log(response);
+    });
+  };
 
   return <div className="h-screen">
     <div className="grid grid-cols-[min-content_auto] grid-flow-dense h-full">
@@ -46,7 +57,7 @@ const Index = () => {
         </ul>
         <form className="flex flex-row" onSubmit={(e) => e.preventDefault()}>
           <input type="text" className="input input-bordered w-full" />
-          <button className="btn btn-ghost rounded-full ml-4 px-0 w-12 h-12">
+          <button className="btn btn-ghost rounded-full ml-4 px-0 w-12 h-12" onClick={clickHandler}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
             </svg>

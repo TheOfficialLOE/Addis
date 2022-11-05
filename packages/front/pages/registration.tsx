@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/router";
-import { FetchAPI } from "../util/FetchAPI";
+import axios from "axios";
 
 enum Status {
   Initial,
@@ -19,7 +19,9 @@ const Registration = () => {
   const emailInput = useRef(null);
   const otpInput = useRef(null);
   const router = useRouter();
-  const fetchAPI = new FetchAPI();
+  const axiosInstance = axios.create({
+    baseURL: "http://localhost:3001/",
+  });
 
   const backButtonOnClick = () => {
     setStatus(Status.Initial);
@@ -32,21 +34,14 @@ const Registration = () => {
         setStatus(Status.WaitingToVerify);
         const email: string = emailInput.current.value;
         const code: string = otpInput.current.value;
-        fetchAPI.post<string>({
-          endPoint: "auth/verify",
-          body: {
-            email,
-            code
-          }
-        }).then(response => {
-          if (response.code === 200) {
-            setCookie("token", response.data);
-            // toast.success("Logged in.");
-            router.push("/");
-          }
-          else {
-            toast.error(response.message);
-          }
+        axiosInstance.post("auth/verify/", {
+          email,
+          code
+        }).then((response) => {
+          setCookie("token", response.data);
+          router.push("/");
+        }).catch(err => {
+          toast.error("Please try again");
         }).finally(() => {
           setStatus(Status.Sent);
         })
@@ -55,17 +50,11 @@ const Registration = () => {
       default: {
         setStatus(Status.WaitingToSend);
         const email: string = emailInput.current.value;
-        fetchAPI.post<string>({
-          endPoint: "auth",
-          body: {
-            email
-          }
-        }).then(response => {
-          if (response.code === 200) {
+        axiosInstance.post("auth", { email })
+          .then(() => {
             setStatus(Status.Sent);
             toast.success("Please check your inbox");
-          }
-        })
+          })
         break;
       }
     }
