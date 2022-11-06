@@ -20,13 +20,7 @@ const Index = () => {
   }, [router, token]);
 
   const clickHandler = () => {
-    axios.post("http://localhost:3001/test")
-      .catch(err => {
-      console.log(err.response.data.status, err.response.data.message);
-    })
-      .then(response => {
-      console.log(response);
-    });
+    console.log("clicked");
   };
 
   return <div className="h-screen">

@@ -55,6 +55,10 @@ const Registration = () => {
             setStatus(Status.Sent);
             toast.success("Please check your inbox");
           })
+          .catch(err => {
+            setStatus(Status.Initial);
+            toast.error("An error occurred")
+          })
         break;
       }
     }
