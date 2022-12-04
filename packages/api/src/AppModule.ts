@@ -1,13 +1,17 @@
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
-import { IdentityAndAccessModule } from "./modules/identity-and-access/IdentityAndAccessModule";
-import { Gateway } from "./modules/gateway/Gateway";
+import { AuthModule } from "./modules/auth/AuthModule";
+import { ConversationsModule } from "@api/modules/conversations/ConversationsModule";
+import { InfrastructureModule } from "@api/infrastructure/InfrastructureModule";
+import { GatewayModule } from "@api/modules/gateway/GatewayModule";
 
 @Module({
   imports: [
+    InfrastructureModule,
     MongooseModule.forRoot("mongodb://localhost/morad-chat"),
-    IdentityAndAccessModule,
-  ],
-  providers: [Gateway]
+    AuthModule,
+    ConversationsModule,
+    GatewayModule,
+  ]
 })
 export class AppModule {}

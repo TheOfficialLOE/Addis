@@ -1,10 +1,9 @@
 import React, { useRef, useState } from "react";
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/router";
-import axios from "axios";
+import { postSignIn, postVerify } from "../util/api";
 
 enum Status {
   Initial,
@@ -14,14 +13,12 @@ enum Status {
 }
 
 const Registration = () => {
-
   const [status, setStatus] = useState<Status>(Status.Initial);
   const emailInput = useRef(null);
+  const nameInput = useRef(null);
+  const usernameInput = useRef(null);
   const otpInput = useRef(null);
   const router = useRouter();
-  const axiosInstance = axios.create({
-    baseURL: "http://localhost:3001/",
-  });
 
   const backButtonOnClick = () => {
     setStatus(Status.Initial);
@@ -33,14 +30,17 @@ const Registration = () => {
       case Status.Sent: {
         setStatus(Status.WaitingToVerify);
         const email: string = emailInput.current.value;
-        const code: string = otpInput.current.value;
-        axiosInstance.post("auth/verify/", {
+        const code: number = parseInt(otpInput.current.value);
+        postVerify({
           email,
           code
-        }).then((response) => {
-          setCookie("token", response.data);
+        }).then(({ data: response }) => {
+          setCookie("token", response.data, {
+            maxAge: 31536000
+          });
           router.push("/");
         }).catch(err => {
+          console.log(err.response.data);
           toast.error("Please try again");
         }).finally(() => {
           setStatus(Status.Sent);
@@ -50,7 +50,13 @@ const Registration = () => {
       default: {
         setStatus(Status.WaitingToSend);
         const email: string = emailInput.current.value;
-        axiosInstance.post("auth", { email })
+        const name: string = nameInput.current.value;
+        const username: string = usernameInput.current.value;
+        postSignIn({
+          email,
+          name,
+          username
+        })
           .then(() => {
             setStatus(Status.Sent);
             toast.success("Please check your inbox");
@@ -75,7 +81,7 @@ const Registration = () => {
             </svg>
           </div> }
           <h2 className="card-title">
-            { (status === Status.Sent || status === Status.WaitingToVerify ) ? 'Enter OTP' : 'Enter Your Email'}
+            { (status === Status.Sent || status === Status.WaitingToVerify ) ? 'Enter OTP' : 'Enter Your Information'}
           </h2>
           <form className="mt-8 w-full" onSubmit={onSubmit}>
             <input
@@ -83,14 +89,34 @@ const Registration = () => {
               placeholder="Email"
               className="input input-primary w-full"
               ref={emailInput}
+              disabled={!(status === Status.Initial)}
             />
+            { (status === Status.Initial || status === Status.WaitingToSend) && (
+              <>
+                <input
+                  type="text"
+                  placeholder="Name"
+                  className="input input-primary mt-4 w-full"
+                  ref={nameInput}
+                  disabled={!(status === Status.Initial)}
+                />
+                <input
+                  type="text"
+                  placeholder="Username"
+                  className="input input-primary mt-4 w-full"
+                  ref={usernameInput}
+                  disabled={!(status === Status.Initial)}
+                />
+              </>
+            )}
             { (status === Status.Sent || status === Status.WaitingToVerify ) && (
               <input
                 type="number"
                 placeholder="OTP"
                 className="input input-primary mt-4 w-full"
                 ref={otpInput}
-              ></input>
+                disabled={!(status === Status.Sent)}
+              />
             ) }
             <button
               className={`btn ${
