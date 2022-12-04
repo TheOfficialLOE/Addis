@@ -1,25 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
-import { getAllConversations } from "../../../util/api";
 import { fetchConversationsThunk } from "./conversationsThunks";
-
-type Conversation = {
-  id: string;
-  creator: {
-    id: string;
-    name: string;
-    username: string;
-  };
-  recipient: {
-    id: string;
-    name: string;
-    username: string;
-  };
-  lastMessage: {
-    authorId: string;
-    content: string
-  };
-};
+import { Conversation } from "./types";
 
 const conversations: Conversation[] = [];
 

@@ -1,43 +1,7 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
-import { getConversationById, postMessage } from "../../../util/api";
 import { fetchConversationThunk } from "./selectedConversationThunks";
-
-// const messagesAdapter = createEntityAdapter<{
-//   id: string,
-//
-//   creator: {
-//     id: string,
-//     name: string,
-//     username: string,
-//   },
-//
-//   recipient: {
-//     id: string,
-//     name: string,
-//     username: string,
-//   },
-//
-//   messages: {
-//     id: string,
-//     authorId: string,
-//     content: string,
-//     // sentAt: string;
-//   }[]
-// }>();
-
-type SelectedConversation = {
-  id: string;
-  creatorId: string;
-  recipientId: string;
-  messages: {
-    id: string,
-    authorId: string,
-    content: string,
-    // sentAt: string,
-    // isSeen: boolean,
-  }[];
-};
+import { SelectedConversation } from "./types";
 
 const initialState: SelectedConversation = {
   id: "",
