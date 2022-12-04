@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../store";
-import { getMe } from "../../util/api";
+import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../../store";
+import { fetchUserThunk } from "./userThunks";
 
 type User = {
   id: string,
@@ -23,15 +23,10 @@ const userSlice = createSlice({
 
   },
   extraReducers: builder => {
-    builder.addCase(fetchUser.fulfilled, (state, action) => {
+    builder.addCase(fetchUserThunk.fulfilled, (state, action) => {
       return action.payload;
     });
   }
-});
-
-export const fetchUser = createAsyncThunk("user/fetch", async () => {
-  const { data: user } = await getMe();
-  return user.data;
 });
 
 export const userReducer = userSlice.reducer;

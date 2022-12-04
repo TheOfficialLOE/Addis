@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { fetchConversations, selectConversations } from "../store/slices/conversationsSlice";
-import { fetchUser, selectUser } from "../store/slices/userSlice";
+import { selectConversations } from "../store/slices/conversations/conversationsSlice";
+import { selectUser } from "../store/slices/user/userSlice";
+import {
+  selectConversation,
+} from "../store/slices/selectedConversation/selectedConversationSlice";
+import { fetchConversationsThunk } from "../store/slices/conversations/conversationsThunks";
 import {
   fetchConversationThunk,
-  selectConversation,
   sendMessageThunk,
-} from "../store/slices/selectedConversationSlice";
+} from "../store/slices/selectedConversation/selectedConversationThunks";
+import { fetchUserThunk } from "../store/slices/user/userThunks";
 
 const Index = () => {
   const conversations = useAppSelector(selectConversations);
@@ -17,8 +21,8 @@ const Index = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchUser());
-    dispatch(fetchConversations());
+    dispatch(fetchUserThunk());
+    dispatch(fetchConversationsThunk());
   }, [dispatch]);
 
   useEffect(() => {

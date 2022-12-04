@@ -1,6 +1,7 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../store";
-import { getConversationById, postMessage } from "../../util/api";
+import { RootState } from "../../store";
+import { getConversationById, postMessage } from "../../../util/api";
+import { fetchConversationThunk } from "./selectedConversationThunks";
 
 // const messagesAdapter = createEntityAdapter<{
 //   id: string,
@@ -60,20 +61,6 @@ const selectedConversationSlice = createSlice({
       return action.payload;
     });
   }
-});
-
-export const fetchConversationThunk = createAsyncThunk("selectedConversation/fetch", async (id: string) => {
-  const { data: conversation } = await getConversationById(id);
-  return conversation.data;
-})
-
-export const sendMessageThunk = createAsyncThunk("selectedConversation/send", async (
-  payload: {
-    conversationId: string,
-    message: string
-  }
-  ) => {
-  await postMessage(payload);
 });
 
 export const selectedConversationReducer = selectedConversationSlice.reducer;

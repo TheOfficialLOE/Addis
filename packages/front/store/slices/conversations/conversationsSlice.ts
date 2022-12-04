@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../store";
-import { getAllConversations } from "../../util/api";
+import { RootState } from "../../store";
+import { getAllConversations } from "../../../util/api";
+import { fetchConversationsThunk } from "./conversationsThunks";
 
 type Conversation = {
   id: string;
@@ -34,15 +35,10 @@ const conversationsSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchConversations.fulfilled, (state, action) => {
+    builder.addCase(fetchConversationsThunk.fulfilled, (state, action) => {
       return action.payload as unknown as Conversation[];
     });
   }
-});
-
-export const fetchConversations = createAsyncThunk("conversation/fetch", async () => {
-  const { data: conversations } = await getAllConversations();
-  return conversations.data;
 });
 
 export const conversationReducer = conversationsSlice.reducer;

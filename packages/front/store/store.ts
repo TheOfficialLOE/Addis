@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { conversationReducer, updateConversation } from "./slices/conversationsSlice";
-import { userReducer } from "./slices/userSlice";
-import { addMessage, selectedConversationReducer } from "./slices/selectedConversationSlice";
+import { conversationReducer, updateConversation } from "./slices/conversations/conversationsSlice";
+import { userReducer } from "./slices/user/userSlice";
+import { addMessage, selectedConversationReducer } from "./slices/selectedConversation/selectedConversationSlice";
 import { socket } from "../util/SocketContext";
 import { Socket } from "socket.io-client";
 
