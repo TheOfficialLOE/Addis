@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import { convertPropsToObject } from "@api/core/util/convertPropsToPlain";
 
 export interface BaseEntityProps<T> {
   id?: string;
@@ -20,5 +21,13 @@ export abstract class Entity<EntityProps = any> {
 
   public equals(target: Entity): boolean {
     return this.id === target.id;
+  }
+
+  public toPlain() {
+    const plainProps = convertPropsToObject(this.props);
+    return {
+      id: this._id.toString(),
+      ...plainProps,
+    };
   }
 }
