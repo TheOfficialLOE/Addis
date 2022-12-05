@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { selectConversations } from "../store/slices/conversations/conversationsSlice";
 import { selectUser } from "../store/slices/user/userSlice";
@@ -63,7 +63,7 @@ const Index = () => {
         ))}
       </ul>
       <div className="h-screen flex flex-col ml-8">
-        <div className="overflow-auto">
+        <div className="grow overflow-auto">
           <ul className="mr-8 ">
             {currentConversationId && conversation.messages.map(message => {
               return <li key={message.id} className={`mt-4 ${message.authorId === user.id && "text-right"}`}>
