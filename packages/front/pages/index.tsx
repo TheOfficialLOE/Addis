@@ -62,17 +62,19 @@ const Index = () => {
           </li>
         ))}
       </ul>
-      <div className="flex flex-col mx-8 mb-8">
-        <ul className="grow">
-          {currentConversationId && conversation.messages.map(message => {
-            return <li key={message.id} className={`mt-4 ${message.authorId === user.id && "text-right"}`}>
-              <p className={`inline-block ${
-                message.authorId === user.id ? "bg-primary text-primary-content" : "bg-secondary text-secondary-content"
-              } p-4 rounded-xl`}>{message.content}</p>
-            </li>
-          })}
-        </ul>
-        <form className="flex flex-row" onSubmit={clickHandler}>
+      <div className="h-screen flex flex-col ml-8">
+        <div className="overflow-auto">
+          <ul className="mr-8 ">
+            {currentConversationId && conversation.messages.map(message => {
+              return <li key={message.id} className={`mt-4 ${message.authorId === user.id && "text-right"}`}>
+                <p className={`inline-block ${
+                  message.authorId === user.id ? "bg-primary text-primary-content" : "bg-secondary text-secondary-content"
+                } p-4 rounded-xl`}>{message.content}</p>
+              </li>
+            })}
+          </ul>
+        </div>
+        <form className="flex flex-row my-8" onSubmit={clickHandler}>
           <input type="text" className="input input-bordered w-full" onChange={(e) => {
             setMessage(e.target.value);
           }
