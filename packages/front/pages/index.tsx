@@ -63,9 +63,9 @@ const Index = () => {
           </li>
         ))}
       </ul>
-      <div className="h-screen flex flex-col ml-8">
+      <div className="h-screen flex flex-col">
         <ScrollableFeed>
-          <div className="mr-8">
+          <div className="mx-8">
             {currentConversationId && conversation.messages.map(message => {
               return <div key={message.id} className={`mt-4 ${message.authorId === user.id && "text-right"}`}>
                 <p className={`inline-block ${
@@ -86,7 +86,7 @@ const Index = () => {
           {/*  })}*/}
           {/*</ul>*/}
         {/*</div>*/}
-        <form className="flex flex-row my-8" onSubmit={clickHandler}>
+        <form className="flex flex-row m-8" onSubmit={clickHandler}>
           <input type="text" className="input input-bordered w-full" onChange={(e) => {
             setMessage(e.target.value);
           }

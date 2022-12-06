@@ -4,32 +4,29 @@ import { userReducer } from "./slices/user/userSlice";
 import { addMessage, selectedConversationReducer } from "./slices/selectedConversation/selectedConversationSlice";
 import { socket } from "../util/SocketContext";
 import { Socket } from "socket.io-client";
+import { SerializedConversation } from "@api/modules/gateway/serialized/SerializedConversation";
+import { SerializedMessage } from "@api/modules/gateway/serialized/SerializedMessage";
 
 export const socketMiddleWare = (socket: Socket) => {
   return ({ dispatch }) => {
-    socket.on("onMessage", (payload) => {
+    socket.on("onMessage", (payload: {
+      conversation: SerializedConversation,
+      message: SerializedMessage
+    }) => {
       dispatch(addMessage({
-        id: payload.message._id,
-        authorId: payload.message.props.author._id,
-        content: payload.message.props.content
-      }));
-      dispatch(updateConversation({
-        id: payload.conversation._id,
-        creator: {
-          id: payload.conversation.props.creator._id,
-          name: payload.conversation.props.creator.props.name,
-          username: payload.conversation.props.creator.props.username,
-        },
-        recipient: {
-          id: payload.conversation.props.recipient._id,
-          name: payload.conversation.props.recipient.props.name,
-          username: payload.conversation.props.recipient.props.username,
-        },
-        lastMessage: {
-          authorId: payload.message.props.author._id,
-          content: payload.message.props.content
-        }
+        id: payload.message.id,
+        authorId: payload.message.authorId,
+        content: payload.message.content
       }))
+      dispatch(updateConversation({
+        id: payload.conversation.id,
+        creator: payload.conversation.creator,
+        recipient: payload.conversation.recipient,
+        lastMessage: {
+          authorId: payload.message.authorId,
+          content: payload.message.content
+        }
+      }));
     });
     return next => action => {
       return next(action);

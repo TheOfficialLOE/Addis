@@ -10,6 +10,8 @@ import { GatewaySession } from "@api/modules/gateway/GatewaySession";
 import { OnEvent } from "@nestjs/event-emitter";
 import { ConversationEntity } from "@api/modules/conversations/domain/ConversationEntity";
 import { MessageEntity } from "@api/modules/conversations/domain/MessageEntity";
+import { toSerializedConversation } from "@api/modules/gateway/serialized/SerializedConversation";
+import { toSerializedMessage } from "@api/modules/gateway/serialized/SerializedMessage";
 
 @WebSocketGateway({
   cors: {
@@ -43,7 +45,10 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect {
       payload.message.author.id === payload.conversation.creator.id
         ? this.sessions.getUserSocket(payload.conversation.recipient.id)
         : this.sessions.getUserSocket(payload.conversation.creator.id);
-    this.server.emit("onMessage", payload);
+    this.server.emit("onMessage", {
+      conversation: toSerializedConversation(payload.conversation),
+      message: toSerializedMessage(payload.message)
+    });
     // if (authorSocket) authorSocket.emit('onMessage', payload);
     // if (recipientSocket) recipientSocket.emit('onMessage', payload);
   }

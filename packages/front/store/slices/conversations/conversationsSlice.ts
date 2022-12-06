@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 import { fetchConversationsThunk } from "./conversationsThunks";
 import { Conversation } from "./types";
@@ -9,7 +9,7 @@ const conversationsSlice = createSlice({
   name: "conversations",
   initialState: conversations,
   reducers: {
-    updateConversation: (state, action) => {
+    updateConversation: (state, action: PayloadAction<Conversation>) => {
       const conversation = action.payload;
       const index = state.findIndex((c) => c.id === conversation.id);
       state.splice(index, 1);

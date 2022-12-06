@@ -1,7 +1,7 @@
-import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createEntityAdapter, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 import { fetchConversationThunk } from "./selectedConversationThunks";
-import { SelectedConversation } from "./types";
+import { Message, SelectedConversation } from "./types";
 
 const initialState: SelectedConversation = {
   id: "",
@@ -14,10 +14,8 @@ const selectedConversationSlice = createSlice({
   name: "selectedConversation",
   initialState: initialState,
   reducers: {
-    addMessage: (state, action) => {
-      state.messages.push({
-        ...action.payload
-      });
+    addMessage: (state, action: PayloadAction<Message>) => {
+      state.messages.push(action.payload);
     }
   },
   extraReducers: builder => {
