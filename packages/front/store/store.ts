@@ -14,6 +14,7 @@ export const socketMiddleWare = (socket: Socket) => {
       message: SerializedMessage
     }) => {
       dispatch(addMessage({
+        conversationId: payload.conversation.id,
         id: payload.message.id,
         authorId: payload.message.authorId,
         content: payload.message.content

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createEntityAdapter, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 import { fetchConversationThunk } from "./selectedConversationThunks";
 import { Message, SelectedConversation } from "./types";
@@ -14,8 +14,11 @@ const selectedConversationSlice = createSlice({
   name: "selectedConversation",
   initialState: initialState,
   reducers: {
-    addMessage: (state, action: PayloadAction<Message>) => {
-      state.messages.push(action.payload);
+    addMessage: (state, action: PayloadAction<Message & {
+      conversationId: string;
+    }>) => {
+      if (action.payload.conversationId === state.id)
+        state.messages.push(action.payload);
     }
   },
   extraReducers: builder => {
