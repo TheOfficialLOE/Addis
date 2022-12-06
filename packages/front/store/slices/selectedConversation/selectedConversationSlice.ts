@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 import { fetchConversationThunk } from "./selectedConversationThunks";
 import { Message, SelectedConversation } from "./types";
+import { OnMessageEvent } from "../../../socket/types";
 
 const initialState: SelectedConversation = {
   id: "",
@@ -14,11 +15,10 @@ const selectedConversationSlice = createSlice({
   name: "selectedConversation",
   initialState: initialState,
   reducers: {
-    addMessage: (state, action: PayloadAction<Message & {
-      conversationId: string;
-    }>) => {
-      if (action.payload.conversationId === state.id)
-        state.messages.push(action.payload);
+    addMessage: (state, action: PayloadAction<OnMessageEvent>) => {
+      const { conversation, message } = action.payload;
+      if (conversation.id === state.id)
+        state.messages.push(message);
     }
   },
   extraReducers: builder => {
