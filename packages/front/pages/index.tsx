@@ -43,12 +43,16 @@ const Index = () => {
     <div className="grid grid-cols-[min-content_auto] grid-flow-dense h-full">
       <ul className="w-96 bg-neutral p-4">
         {conversations.map(conversation => (
-          <li key={conversation.id} className="btn justify-start w-full h-20" onClick={() => {
+          <li key={conversation.id} className={`btn justify-start w-full h-20 ${
+            conversation.id === currentConversationId && "btn-primary"
+          }`} onClick={() => {
             setCurrentConversationId(conversation.id);
           }}
           >
             <div className="w-12 h-12 avatar justify-center items-center rounded-xl bg-accent">
-              <p className="text-accent-content font-bold">J</p>
+              <p className="text-accent-content font-bold">{
+                conversation.creator.id === user.id ? conversation.recipient.name[0] : user.name[0]
+              }</p>
             </div>
             <div className="ml-4 flex flex-col items-start">
               <p className="text-white font-bold">{
@@ -58,12 +62,13 @@ const Index = () => {
             </div>
             <div className="flex flex-col items-end items-end grow">
               <p>8:52 PM</p>
-              <div className="badge badge-primary mt-2">1500</div>
+              <div className="badge badge-accent mt-2">1500</div>
             </div>
           </li>
         ))}
       </ul>
-      <div className="h-screen flex flex-col">
+      {currentConversationId &&
+        <div className="h-screen flex flex-col">
         <ScrollableFeed>
           <div className="mx-8">
             {currentConversationId && conversation.messages.map(message => {
@@ -76,15 +81,15 @@ const Index = () => {
           </div>
         </ScrollableFeed>
         {/*<div className="grow overflow-auto">*/}
-          {/*<ul className="mr-8 ">*/}
-          {/*  {currentConversationId && conversation.messages.map(message => {*/}
-          {/*    return <li key={message.id} className={`mt-4 ${message.authorId === user.id && "text-right"}`}>*/}
-          {/*      <p className={`inline-block ${*/}
-          {/*        message.authorId === user.id ? "bg-primary text-primary-content" : "bg-secondary text-secondary-content"*/}
-          {/*      } p-4 rounded-xl`}>{message.content}</p>*/}
-          {/*    </li>*/}
-          {/*  })}*/}
-          {/*</ul>*/}
+        {/*<ul className="mr-8 ">*/}
+        {/*  {currentConversationId && conversation.messages.map(message => {*/}
+        {/*    return <li key={message.id} className={`mt-4 ${message.authorId === user.id && "text-right"}`}>*/}
+        {/*      <p className={`inline-block ${*/}
+        {/*        message.authorId === user.id ? "bg-primary text-primary-content" : "bg-secondary text-secondary-content"*/}
+        {/*      } p-4 rounded-xl`}>{message.content}</p>*/}
+        {/*    </li>*/}
+        {/*  })}*/}
+        {/*</ul>*/}
         {/*</div>*/}
         <form className="flex flex-row m-8" onSubmit={clickHandler}>
           <input type="text" className="input input-bordered w-full" onChange={(e) => {
@@ -98,6 +103,7 @@ const Index = () => {
           </button>
         </form>
       </div>
+      }
     </div>
   </div>
 };

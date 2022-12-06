@@ -10,6 +10,8 @@ import {
 import { IsAuthentic } from "@api/core/decorators/IsAuthenticDecorator";
 import { ConversationsRepositoryPort } from "@api/modules/conversations/database/ConversationsRepositoryPort";
 import { EventEmitter2 } from "@nestjs/event-emitter";
+import { AuthUser } from "@api/core/decorators/AuthUserDecorator";
+import { UserEntity } from "@api/modules/auth/domain/user/UserEntity";
 
 @Controller("conversations")
 @IsAuthentic()
@@ -21,8 +23,16 @@ export class GetConversationsController {
   ) {}
 
   @Get("list")
-  async getConversationsList() {
-    const conversations: ConversationListItemResponseDto[] = (await this.conversationRepository.find())
+  async getConversationsList(
+    @AuthUser() user: UserEntity
+  ) {
+    const conversations: ConversationListItemResponseDto[] = (await this.conversationRepository.find({
+      $or: [{
+        creator: user.id
+      }, {
+        recipient: user.id
+      }]
+    }))
       .map(conversation => ConversationListItemResponseDto.new(conversation));
     return CoreApiResponse.success(conversations);
   }
