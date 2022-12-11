@@ -1,15 +1,17 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { OtpRepository } from "@api/modules/auth/database/otp/OtpRepository";
 import { OnEvent } from "@nestjs/event-emitter";
 import { OtpEntity } from "@api/modules/auth/domain/otp/OtpEntity";
 import { Mailer } from "@api/infrastructure/services/Mailer";
 import { ApiKeys } from "@api/infrastructure/config/ApiKeys";
 import { UserSignedInEvent } from "@api/modules/auth/domain/events/UserSignedInEvent";
+import { OtpRepositoryPort } from "@api/modules/auth/database/otp/OtpRepositoryPort";
 
 @Injectable()
 export class UserSignedInEventListener {
   constructor(
-    private readonly otpRepository: OtpRepository
+    @Inject(OtpRepository)
+    private readonly otpRepository: OtpRepositoryPort
   ) {}
 
   @OnEvent("user.signed-in")

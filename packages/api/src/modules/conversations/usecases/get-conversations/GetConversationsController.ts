@@ -26,22 +26,22 @@ export class GetConversationsController {
   async getConversationsList(
     @AuthUser() user: UserEntity
   ) {
-    const conversations: ConversationListItemResponseDto[] = (await this.conversationRepository.find({
-      $or: [{
-        creator: user.id
-      }, {
-        recipient: user.id
-      }]
-    }))
+    // const conversations: ConversationListItemResponseDto[] = (await this.conversationRepository.find({
+    //   $or: [{
+    //     creator: user.id
+    //   }, {
+    //     recipient: user.id
+    //   }]
+    // }))
+    //   .map(conversation => ConversationListItemResponseDto.new(conversation));
+    // return CoreApiResponse.success(conversations);
+    return (await this.conversationRepository.getList(user.id))
       .map(conversation => ConversationListItemResponseDto.new(conversation));
-    return CoreApiResponse.success(conversations);
   }
 
   @Get("/:id")
-  async getConversation(@Param("id") conversationId: string) {
-    const conversation = GetConversationByIdResponseDto.new(
-      await this.conversationRepository.findOne({ _id: conversationId })
-    );
-    return CoreApiResponse.success(conversation);
+  async getConversation(@Param("id") conversationId: string, @AuthUser() user: UserEntity) {
+    const conversation = await this.conversationRepository.findOne({ _id: conversationId });
+    return CoreApiResponse.success(GetConversationByIdResponseDto.new(conversation));
   }
 }

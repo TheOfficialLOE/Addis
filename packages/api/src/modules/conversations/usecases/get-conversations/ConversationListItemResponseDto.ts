@@ -20,23 +20,26 @@ export class ConversationListItemResponseDto {
     content: string
   };
 
-  public static new(conversation: ConversationEntity): ConversationListItemResponseDto {
+  unread: number;
+
+  public static new(conversation: any): ConversationListItemResponseDto {
     return {
-      id: conversation.id,
+      id: conversation._id,
       creator: {
-        id: conversation.creator.id,
+        id: conversation.creator._id,
         name: conversation.creator.name,
         username: conversation.creator.username
       },
       recipient: {
-        id: conversation.recipient.id,
+        id: conversation.recipient._id,
         name: conversation.recipient.name,
         username: conversation.recipient.username
       },
       lastMessage: {
-        authorId: conversation.messages[0].author.id,
-        content: conversation.messages[0].content
-      }
+        authorId: conversation.lastMessage.author,
+        content: conversation.lastMessage.content
+      },
+      unread: conversation.unread,
     };
   }
 }

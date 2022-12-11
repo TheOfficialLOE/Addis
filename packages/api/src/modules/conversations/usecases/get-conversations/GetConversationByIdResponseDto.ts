@@ -11,6 +11,7 @@ export class GetConversationByIdResponseDto {
     id: string;
     authorId: string;
     content: string
+    isSeen: boolean;
   }[];
 
   public static new(conversation: ConversationEntity): GetConversationByIdResponseDto {
@@ -22,7 +23,8 @@ export class GetConversationByIdResponseDto {
         {
           id: message.id,
           authorId: message.author.id,
-          content: message.content
+          content: message.content,
+          isSeen: message.isSeen
         }
       ))
     };

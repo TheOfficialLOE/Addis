@@ -4,7 +4,7 @@ export type Message = {
   authorId: string,
   content: string,
   // sentAt: string,
-  // isSeen: boolean,
+  isSeen: boolean,
 };
 
 export type SelectedConversation = {

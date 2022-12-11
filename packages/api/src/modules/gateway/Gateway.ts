@@ -12,6 +12,7 @@ import { ConversationEntity } from "@api/modules/conversations/domain/Conversati
 import { MessageEntity } from "@api/modules/conversations/domain/MessageEntity";
 import { toSerializedConversation } from "@api/modules/gateway/serialized/SerializedConversation";
 import { toSerializedMessage } from "@api/modules/gateway/serialized/SerializedMessage";
+import { UserEntity } from "@api/modules/auth/domain/user/UserEntity";
 
 @WebSocketGateway({
   cors: {
@@ -51,5 +52,11 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect {
     });
     // if (authorSocket) authorSocket.emit('onMessage', payload);
     // if (recipientSocket) recipientSocket.emit('onMessage', payload);
+  }
+
+  @OnEvent("messages.read")
+  async messagesRead(payload: { conversation: ConversationEntity, user: UserEntity }) {
+    const socket = this.sessions.getUserSocket(payload.user.id);
+    this.server.emit("onRead", toSerializedConversation(payload.conversation));
   }
 }

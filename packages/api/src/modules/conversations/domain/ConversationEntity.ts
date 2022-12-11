@@ -1,6 +1,6 @@
 import { Entity } from "@api/core/base-classes/Entity";
 import { MessageEntity as Message } from "@api/modules/conversations/domain/MessageEntity";
-import { UserEntity as User } from "@api/modules/auth/domain/user/UserEntity";
+import { UserEntity, UserEntity as User } from "@api/modules/auth/domain/user/UserEntity";
 
 interface ConversationEntityProps {
   creator: User;
@@ -39,5 +39,12 @@ export class ConversationEntity extends Entity<ConversationEntityProps> {
 
   newMessage(message: Message): void {
     this.messages.push(message);
+  }
+
+  markAsReadBy(user: UserEntity) {
+    this.props.messages.forEach(message => {
+      if (message.author.id !== user.id)
+        message.markAsSeen();
+    })
   }
 }

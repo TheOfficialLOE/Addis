@@ -14,6 +14,9 @@ import {
 import {
   CreateConversationUseCaseImpl
 } from "@api/modules/conversations/usecases/create-conversation/CreateConversationUseCaseImpl";
+import { MessageMapper } from "@api/modules/conversations/database/MessageMapper";
+import { UpdateUnreadController } from "@api/modules/conversations/usecases/update-unread/UpdateUnreadController";
+import { UpdateUnreadUseCaseImpl } from "@api/modules/conversations/usecases/update-unread/UpdateUnreadUseCaseImpl";
 
 @Module({
   imports: [
@@ -24,12 +27,15 @@ import {
     CreateConversationController,
     SendMessageController,
     GetConversationsController,
+    UpdateUnreadController
   ],
   providers: [
     ConversationsRepository,
     ConversationMapper,
+    MessageMapper,
     CreateConversationUseCaseImpl,
     SendMessageUseCaseImpl,
+    UpdateUnreadUseCaseImpl
   ]
 })
 export class ConversationsModule {

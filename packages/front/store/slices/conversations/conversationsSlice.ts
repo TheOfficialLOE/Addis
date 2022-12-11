@@ -10,7 +10,7 @@ const conversationsSlice = createSlice({
   name: "conversations",
   initialState: conversations,
   reducers: {
-    updateConversation: (state, action: PayloadAction<OnMessageEvent>) => {
+    updateConversationForNewMessage: (state, action: PayloadAction<OnMessageEvent>) => {
       const { conversation, message } = action.payload;
       const index = state.findIndex((c) => c.id === conversation.id);
       state.splice(index, 1);
@@ -19,8 +19,14 @@ const conversationsSlice = createSlice({
         lastMessage: {
           authorId: message.authorId,
           content: message.content
-        }
+        },
+        // todo ---------------------------
+        unread: 0
       });
+    },
+    updateUnread: (state, action) => {
+      const index = state.findIndex((c) => c.id === action.payload);
+      state[index].unread = 0;
     }
   },
   extraReducers: (builder) => {
@@ -32,4 +38,4 @@ const conversationsSlice = createSlice({
 
 export const conversationReducer = conversationsSlice.reducer;
 export const selectConversations = (state: RootState) => state.conversations;
-export const { updateConversation } = conversationsSlice.actions;
+export const { updateConversationForNewMessage, updateUnread } = conversationsSlice.actions;

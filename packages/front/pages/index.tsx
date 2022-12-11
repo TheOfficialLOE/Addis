@@ -12,6 +12,13 @@ import {
 } from "../store/slices/selectedConversation/selectedConversationThunks";
 import { fetchUserThunk } from "../store/slices/user/userThunks";
 import ScrollableFeed from "react-scrollable-feed";
+import { postMarkAsRead } from "../util/api";
+
+/* update the unread messages
+* when we open the conversation
+* when we receive a message in the open tab*/
+
+
 
 const Index = () => {
   const conversations = useAppSelector(selectConversations);
@@ -27,8 +34,16 @@ const Index = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchConversationThunk(currentConversationId));
+    if (currentConversationId !== "") {
+      dispatch(fetchConversationThunk(currentConversationId));
+      postMarkAsRead(currentConversationId);
+    }
   }, [currentConversationId, dispatch]);
+
+  // useEffect(() => {
+    // dispatch(fetchUserThunk());
+    // dispatch(fetchConversationsThunk());
+  // }, []);
 
   const clickHandler = async (e) => {
     e.preventDefault();
@@ -62,7 +77,10 @@ const Index = () => {
             </div>
             <div className="flex flex-col items-end items-end grow">
               <p>8:52 PM</p>
-              <div className="badge badge-accent mt-2">1500</div>
+              {conversation.unread > 0 && <div className="badge badge-accent mt-2">
+                {conversation.unread}
+              </div>
+              }
             </div>
           </li>
         ))}
@@ -73,9 +91,25 @@ const Index = () => {
           <div className="mx-8">
             {currentConversationId && conversation.messages.map(message => {
               return <div key={message.id} className={`mt-4 ${message.authorId === user.id && "text-right"}`}>
-                <p className={`inline-block ${
+                <div className={`inline-block ${
                   message.authorId === user.id ? "bg-primary text-primary-content" : "bg-secondary text-secondary-content"
-                } p-4 rounded-xl`}>{message.content}</p>
+                } p-4 rounded-xl`}>
+                  <p>{message.content}</p>
+                  {message.authorId === user.id && (message.isSeen ?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                         height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                         stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M7 12l5 5l10 -10"></path>
+                    <path d="M2 12l5 5m5 -5l5 -5"></path>
+                  </svg> :
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                         height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                         stroke-linecap="round" stroke-linejoin="round">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                      <path d="M5 12l5 5l10 -10"></path>
+                    </svg>)}
+                </div>
               </div>
             })}
           </div>

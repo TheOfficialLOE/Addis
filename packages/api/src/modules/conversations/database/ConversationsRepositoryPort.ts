@@ -3,5 +3,5 @@ import { ConversationSchema } from "@api/modules/conversations/database/Conversa
 import { ConversationEntity } from "@api/modules/conversations/domain/ConversationEntity";
 
 export interface ConversationsRepositoryPort extends RepositoryPort<ConversationSchema, ConversationEntity> {
-
+  getList: (userId: string) => Promise<any[]>;
 }

@@ -40,4 +40,8 @@ export class MessageEntity extends Entity<MessageEntityProps> {
   get sentAt(): number {
     return this.props.sentAt;
   }
+
+  markAsSeen(): void {
+    this.props.isSeen = true;
+  }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { UserRepository } from "@api/modules/auth/database/user/UserRepository";
 import { OnEvent } from "@nestjs/event-emitter";
 import { UserEntity } from "@api/modules/auth/domain/user/UserEntity";
@@ -6,16 +6,18 @@ import { CoreAssert } from "@api/core/util/CoreAssert";
 import { Exception } from "@api/core/base-classes/Exception";
 import { Code } from "@api/core/client-response/Code";
 import { OtpVerifiedEvent } from "@api/modules/auth/domain/events/OtpVerifiedEvent";
+import { UserRepositoryPort } from "@api/modules/auth/database/user/UserRepositoryPort";
 
 @Injectable()
 export class OtpVerifiedEventListener {
   constructor(
-    private readonly userRepository: UserRepository
+    @Inject(UserRepository)
+    private readonly userRepository: UserRepositoryPort
   ) {}
 
   @OnEvent("otp.verified")
-  async listen(payload: OtpVerifiedEvent) {
-    const user = await this.findUserOrThrow(payload.email);
+  async listen(event: OtpVerifiedEvent) {
+    const user = await this.findUserOrThrow(event.email);
     await this.markUserAsVerified(user);
   }
 

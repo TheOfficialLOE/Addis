@@ -19,6 +19,14 @@ const selectedConversationSlice = createSlice({
       const { conversation, message } = action.payload;
       if (conversation.id === state.id)
         state.messages.push(message);
+    },
+    markAsSeen: (state, action) => {
+      if (action.payload === state.id) {
+        state.messages.forEach(message => {
+          const index = state.messages.findIndex(m => m.id === message.id);
+          state.messages[index].isSeen = true;
+        });
+      }
     }
   },
   extraReducers: builder => {
@@ -30,4 +38,4 @@ const selectedConversationSlice = createSlice({
 
 export const selectedConversationReducer = selectedConversationSlice.reducer;
 export const selectConversation = (state: RootState) => state.selectedConversation;
-export const { addMessage } = selectedConversationSlice.actions;
+export const { addMessage, markAsSeen } = selectedConversationSlice.actions;
