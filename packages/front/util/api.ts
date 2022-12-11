@@ -37,6 +37,3 @@ export const postMessage = async (data: SendMessageRequestDto & {
   await axiosInstance.post("conversations/"+ data.conversationId, {
     message: data.message,
   }, config);
-
-export const postMarkAsRead = async (conversationId: string) =>
-  await axiosInstance.post("conversations/mark-as-read/" + conversationId, {}, config);

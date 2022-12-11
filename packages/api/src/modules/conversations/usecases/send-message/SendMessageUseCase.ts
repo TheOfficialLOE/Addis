@@ -4,8 +4,8 @@ import { MessageEntity } from "@api/modules/conversations/domain/MessageEntity";
 import { ConversationEntity } from "@api/modules/conversations/domain/ConversationEntity";
 
 export type SendMessageUseCasePayload = SendMessageRequestDto & {
-  authorId: string,
   conversationId: string
+  authorId: string,
 }
 
 export type SendMessageUseCaseResponse = {

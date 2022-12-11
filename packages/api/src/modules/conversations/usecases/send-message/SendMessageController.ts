@@ -23,8 +23,8 @@ export class SendMessageController {
     @Body() body: SendMessageRequestDto
   ) {
     const { conversation, message } = await this.sendMessageUseCase.execute({
-      authorId: user.id,
       conversationId,
+      authorId: user.id,
       ...body
     });
     this.eventEmitter.emit("message-created", {

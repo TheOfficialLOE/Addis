@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 import { fetchConversationThunk } from "./selectedConversationThunks";
-import { Message, SelectedConversation } from "./types";
+import { SelectedConversation } from "./types";
 import { OnMessageEvent } from "../../../socket/types";
 
 const initialState: SelectedConversation = {
@@ -19,14 +19,6 @@ const selectedConversationSlice = createSlice({
       const { conversation, message } = action.payload;
       if (conversation.id === state.id)
         state.messages.push(message);
-    },
-    markAsSeen: (state, action) => {
-      if (action.payload === state.id) {
-        state.messages.forEach(message => {
-          const index = state.messages.findIndex(m => m.id === message.id);
-          state.messages[index].isSeen = true;
-        });
-      }
     }
   },
   extraReducers: builder => {
@@ -38,4 +30,4 @@ const selectedConversationSlice = createSlice({
 
 export const selectedConversationReducer = selectedConversationSlice.reducer;
 export const selectConversation = (state: RootState) => state.selectedConversation;
-export const { addMessage, markAsSeen } = selectedConversationSlice.actions;
+export const { addMessage } = selectedConversationSlice.actions;

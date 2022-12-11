@@ -4,7 +4,6 @@ import { UserEntity as User } from "@api/modules/auth/domain/user/UserEntity";
 interface MessageEntityProps {
   author: User;
   content: string;
-  isSeen: boolean;
   sentAt: number;
 }
 
@@ -15,12 +14,10 @@ interface CreateMessageEntityProps {
 
 export class MessageEntity extends Entity<MessageEntityProps> {
   public static new(props: CreateMessageEntityProps): MessageEntity {
-    const sentAt = Date.now();
     return new MessageEntity({
       props: {
         ...props,
-        isSeen: false,
-        sentAt
+        sentAt: Date.now()
       }
     });
   }
@@ -33,15 +30,7 @@ export class MessageEntity extends Entity<MessageEntityProps> {
     return this.props.content;
   }
 
-  get isSeen(): boolean {
-    return this.props.isSeen;
-  }
-
   get sentAt(): number {
     return this.props.sentAt;
-  }
-
-  markAsSeen(): void {
-    this.props.isSeen = true;
   }
 }

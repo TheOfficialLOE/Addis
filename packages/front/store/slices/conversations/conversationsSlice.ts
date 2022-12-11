@@ -19,15 +19,9 @@ const conversationsSlice = createSlice({
         lastMessage: {
           authorId: message.authorId,
           content: message.content
-        },
-        // todo ---------------------------
-        unread: 0
+        }
       });
     },
-    updateUnread: (state, action) => {
-      const index = state.findIndex((c) => c.id === action.payload);
-      state[index].unread = 0;
-    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchConversationsThunk.fulfilled, (state, action) => {
@@ -38,4 +32,4 @@ const conversationsSlice = createSlice({
 
 export const conversationReducer = conversationsSlice.reducer;
 export const selectConversations = (state: RootState) => state.conversations;
-export const { updateConversationForNewMessage, updateUnread } = conversationsSlice.actions;
+export const { updateConversationForNewMessage } = conversationsSlice.actions;

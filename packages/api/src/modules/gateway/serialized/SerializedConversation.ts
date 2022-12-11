@@ -2,12 +2,14 @@ import { ConversationEntity } from "@api/modules/conversations/domain/Conversati
 
 export type SerializedConversation = {
   id: string;
-  creator: {
+
+  userA: {
     id: string;
     name: string;
     username: string;
   };
-  recipient: {
+
+  userB: {
     id: string;
     name: string;
     username: string;
@@ -17,15 +19,15 @@ export type SerializedConversation = {
 export const toSerializedConversation = (conversation: ConversationEntity): SerializedConversation => {
   return {
     id: conversation.id,
-    creator: {
-      id: conversation.creator.id,
-      name: conversation.creator.name,
-      username: conversation.creator.username
+    userA: {
+      id: conversation.userA.id,
+      name: conversation.userA.name,
+      username: conversation.userA.username
     },
-    recipient: {
-      id: conversation.recipient.id,
-      name: conversation.recipient.name,
-      username: conversation.recipient.username
+    userB: {
+      id: conversation.userB.id,
+      name: conversation.userB.name,
+      username: conversation.userB.username
     }
   }
 }

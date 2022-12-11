@@ -34,10 +34,10 @@ export class ConversationsRepository
       $match: {
         $or: [
           {
-            creator: new Types.ObjectId(userId)
+            userA: new Types.ObjectId(userId)
           },
           {
-            recipient: new Types.ObjectId(userId)
+            userB: new Types.ObjectId(userId)
           }
         ]
       }
@@ -45,48 +45,49 @@ export class ConversationsRepository
       {
         $lookup: {
           from: "users",
-          localField: "creator",
+          localField: "userA",
           foreignField: "_id",
-          as: "creator"
+          as: "userA"
         }
       },
       {
-        $unwind: "$creator"
+        $unwind: "$userA"
       },
       {
         $lookup: {
           from: "users",
-          localField: "recipient",
+          localField: "userB",
           foreignField: "_id",
-          as: "recipient"
+          as: "userB"
         }
       },
       {
-        $unwind: "$recipient"
+        $unwind: "$userB"
       },
-      {
-        $project: {
-          creator: 1,
-          recipient: 1,
-          lastMessage: {
-            $last: "$messages"
-          },
-          unread: {
-            $size: {
-              $filter: {
-                input: "$messages",
-                as: "message",
-                cond: {
-                  $and: [
-                    { $eq: ["$$message.isSeen", false] },
-                    { $ne: ["$$message.author", new Types.ObjectId(userId)] },
-                  ]
-                }
-              }
-            },
-          },
-        },
-      },
+      // todo: -------------------------
+      // {
+      //   $project: {
+      //     creator: 1,
+      //     recipient: 1,
+      //     lastMessage: {
+      //       $last: "$messages"
+      //     },
+      //     unread: {
+      //       $size: {
+      //         $filter: {
+      //           input: "$messages",
+      //           as: "message",
+      //           cond: {
+      //             $and: [
+      //               { $eq: ["$$message.isSeen", false] },
+      //               { $ne: ["$$message.author", new Types.ObjectId(userId)] },
+      //             ]
+      //           }
+      //         }
+      //       },
+      //     },
+      //   },
+      // },
     ]);
     return conversations;
   }

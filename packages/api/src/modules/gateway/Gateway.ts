@@ -12,7 +12,6 @@ import { ConversationEntity } from "@api/modules/conversations/domain/Conversati
 import { MessageEntity } from "@api/modules/conversations/domain/MessageEntity";
 import { toSerializedConversation } from "@api/modules/gateway/serialized/SerializedConversation";
 import { toSerializedMessage } from "@api/modules/gateway/serialized/SerializedMessage";
-import { UserEntity } from "@api/modules/auth/domain/user/UserEntity";
 
 @WebSocketGateway({
   cors: {
@@ -43,20 +42,14 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect {
   }) {
     const authorSocket = this.sessions.getUserSocket(payload.message.author.id);
     const recipientSocket =
-      payload.message.author.id === payload.conversation.creator.id
-        ? this.sessions.getUserSocket(payload.conversation.recipient.id)
-        : this.sessions.getUserSocket(payload.conversation.creator.id);
+      payload.message.author.id === payload.conversation.userA.id
+        ? this.sessions.getUserSocket(payload.conversation.userB.id)
+        : this.sessions.getUserSocket(payload.conversation.userA.id);
     this.server.emit("onMessage", {
       conversation: toSerializedConversation(payload.conversation),
       message: toSerializedMessage(payload.message)
     });
     // if (authorSocket) authorSocket.emit('onMessage', payload);
     // if (recipientSocket) recipientSocket.emit('onMessage', payload);
-  }
-
-  @OnEvent("messages.read")
-  async messagesRead(payload: { conversation: ConversationEntity, user: UserEntity }) {
-    const socket = this.sessions.getUserSocket(payload.user.id);
-    this.server.emit("onRead", toSerializedConversation(payload.conversation));
   }
 }

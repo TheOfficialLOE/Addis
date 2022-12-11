@@ -7,10 +7,10 @@ import { MessagesSchema } from "@api/modules/conversations/database/MessageSchem
 @Schema({ collection: "conversations" })
 export class ConversationSchema extends IdentifiableSchema {
   @Prop({ type: SchemaTypes.ObjectId, ref: UserSchema.name, autopopulate: true })
-  creator: UserSchema;
+  userA: UserSchema;
 
   @Prop({ type: SchemaTypes.ObjectId, ref: UserSchema.name, autopopulate: true })
-  recipient: UserSchema;
+  userB: UserSchema;
 
   @Prop([MessagesSchema])
   messages: MessagesSchema[];

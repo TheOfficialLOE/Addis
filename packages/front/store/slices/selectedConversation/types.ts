@@ -2,9 +2,7 @@
 export type Message = {
   id: string,
   authorId: string,
-  content: string,
-  // sentAt: string,
-  isSeen: boolean,
+  content: string
 };
 
 export type SelectedConversation = {

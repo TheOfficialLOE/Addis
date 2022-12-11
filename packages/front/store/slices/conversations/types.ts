@@ -15,5 +15,4 @@ export type Conversation = {
   creator: UserInConversation;
   recipient: UserInConversation;
   lastMessage: LastMessage;
-  unread: number;
 };

@@ -17,8 +17,8 @@ export class ConversationMapper implements Mapper<ConversationSchema, Conversati
     return new ConversationEntity({
       id: schema._id.toString(),
       props: {
-        creator: this.userMapper.toDomain(schema.creator),
-        recipient: this.userMapper.toDomain(schema.recipient),
+        userA: this.userMapper.toDomain(schema.userA),
+        userB: this.userMapper.toDomain(schema.userB),
         messages: schema.messages ? schema.messages.map(message => this.messageMapper.toDomain(message)) : [],
       }
     });
@@ -27,8 +27,8 @@ export class ConversationMapper implements Mapper<ConversationSchema, Conversati
   toSchema(entity: ConversationEntity): ConversationSchema {
     return {
       _id: new Types.ObjectId(entity.id),
-      creator: this.userMapper.toSchema(entity.creator),
-      recipient: this.userMapper.toSchema(entity.recipient),
+      userA: this.userMapper.toSchema(entity.userA),
+      userB: this.userMapper.toSchema(entity.userB),
       messages: entity.messages ? entity.messages.map(message => this.messageMapper.toSchema(message)): [],
     };
   }

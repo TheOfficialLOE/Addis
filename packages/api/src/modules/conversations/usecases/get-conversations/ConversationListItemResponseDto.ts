@@ -1,15 +1,14 @@
-import { ConversationEntity } from "@api/modules/conversations/domain/ConversationEntity";
 
 export class ConversationListItemResponseDto {
   id: string;
 
-  creator: {
+  userA: {
     id: string;
     name: string;
     username: string;
   };
 
-  recipient: {
+  userB: {
     id: string;
     name: string;
     username: string;
@@ -25,12 +24,12 @@ export class ConversationListItemResponseDto {
   public static new(conversation: any): ConversationListItemResponseDto {
     return {
       id: conversation._id,
-      creator: {
+      userA: {
         id: conversation.creator._id,
         name: conversation.creator.name,
         username: conversation.creator.username
       },
-      recipient: {
+      userB: {
         id: conversation.recipient._id,
         name: conversation.recipient.name,
         username: conversation.recipient.username

@@ -1,21 +1,21 @@
 import { Entity } from "@api/core/base-classes/Entity";
 import { MessageEntity as Message } from "@api/modules/conversations/domain/MessageEntity";
-import { UserEntity, UserEntity as User } from "@api/modules/auth/domain/user/UserEntity";
+import { UserEntity as User } from "@api/modules/auth/domain/user/UserEntity";
 
 interface ConversationEntityProps {
-  creator: User;
-  recipient: User;
+  userA: User;
+  userB: User;
   messages: Message[];
 }
 
 interface CreateConversationEntityProps {
-  creator: User;
-  recipient: User;
+  userA: User;
+  userB: User;
 }
 
 export class ConversationEntity extends Entity<ConversationEntityProps> {
   public static new(props: CreateConversationEntityProps): ConversationEntity {
-    if (props.creator.equals(props.recipient))
+    if (props.userA.equals(props.userB))
       throw "You can't message to yourself!";
     return new ConversationEntity({
       props: {
@@ -25,12 +25,12 @@ export class ConversationEntity extends Entity<ConversationEntityProps> {
     });
   }
 
-  get creator(): User {
-    return this.props.creator;
+  get userA(): User {
+    return this.props.userA;
   }
 
-  get recipient(): User {
-    return this.props.recipient;
+  get userB(): User {
+    return this.props.userB;
   }
 
   get messages(): Message[] {
@@ -39,12 +39,5 @@ export class ConversationEntity extends Entity<ConversationEntityProps> {
 
   newMessage(message: Message): void {
     this.messages.push(message);
-  }
-
-  markAsReadBy(user: UserEntity) {
-    this.props.messages.forEach(message => {
-      if (message.author.id !== user.id)
-        message.markAsSeen();
-    })
   }
 }

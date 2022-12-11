@@ -17,7 +17,6 @@ export class MessageMapper implements Mapper<MessagesSchema, MessageEntity> {
       props: {
         author: this.userMapper.toDomain(schema.author),
         content: schema.content,
-        isSeen: schema.isSeen,
         sentAt: schema.sentAt
       }
     });
@@ -28,7 +27,6 @@ export class MessageMapper implements Mapper<MessagesSchema, MessageEntity> {
       _id: new Types.ObjectId(entity.id),
       author: this.userMapper.toSchema(entity.author),
       content: entity.content,
-      isSeen: entity.isSeen,
       sentAt: entity.sentAt
     };
   }

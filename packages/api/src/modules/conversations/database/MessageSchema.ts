@@ -11,9 +11,6 @@ export class MessagesSchema extends IdentifiableSchema {
   @Prop({ required: true })
   content: string;
 
-  @Prop({ default: false })
-  isSeen: boolean;
-
   @Prop()
   sentAt: number;
 }

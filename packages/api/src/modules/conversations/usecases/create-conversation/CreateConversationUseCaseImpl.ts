@@ -20,18 +20,18 @@ export class CreateConversationUseCaseImpl implements CreateConversationUseCase 
   ) {}
 
   async execute(payload: CreateConversationPayload): Promise<void> {
-    const creator = await this.userRepository.findOne({
+    const userA = await this.userRepository.findOne({
       _id: payload.creatorId
     });
-    const recipient = await this.userRepository.findOne({
+    const userB = await this.userRepository.findOne({
       _id: payload.recipientId
     });
     const conversation = ConversationEntity.new({
-      creator,
-      recipient
+      userA,
+      userB
     });
     conversation.newMessage(MessageEntity.new({
-      author: creator,
+      author: userA,
       content: payload.message
     }));
     await this.conversationRepository.create(conversation);
