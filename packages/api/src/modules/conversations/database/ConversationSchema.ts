@@ -14,4 +14,13 @@ export class ConversationSchema extends IdentifiableSchema {
 
   @Prop([MessagesSchema])
   messages: MessagesSchema[];
+
+  @Prop({ type: MessagesSchema })
+  lastMessage: MessagesSchema;
+
+  @Prop()
+  lastMessageSeenTimeStampUserA: number;
+
+  @Prop()
+  lastMessageSeenTimeStampUserB: number;
 }

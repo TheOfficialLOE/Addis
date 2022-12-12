@@ -6,6 +6,9 @@ interface ConversationEntityProps {
   userA: User;
   userB: User;
   messages: Message[];
+  lastMessage: Message;
+  lastMessageSeenTimeStampUserA: number;
+  lastMessageSeenTimeStampUserB: number;
 }
 
 interface CreateConversationEntityProps {
@@ -20,7 +23,10 @@ export class ConversationEntity extends Entity<ConversationEntityProps> {
     return new ConversationEntity({
       props: {
         ...props,
-        messages: []
+        messages: [],
+        lastMessage: null,
+        lastMessageSeenTimeStampUserA: null,
+        lastMessageSeenTimeStampUserB: null
       }
     });
   }
@@ -37,7 +43,28 @@ export class ConversationEntity extends Entity<ConversationEntityProps> {
     return this.props.messages;
   }
 
+  get lastMessage(): Message {
+    return this.props.lastMessage;
+  }
+
+  get lastMessageSeenTimeStampUserA(): number {
+    return this.props.lastMessageSeenTimeStampUserA;
+  }
+
+  get lastMessageSeenTimeStampUserB(): number {
+    return this.props.lastMessageSeenTimeStampUserB;
+  }
+
   newMessage(message: Message): void {
-    this.messages.push(message);
+    this.props.messages.push(message);
+    this.props.lastMessage = message;
+  }
+
+  setLastMessageSeenTimeStampForUser(user: User) {
+    const now = Date.now();
+    if (this.userA.equals(user))
+      this.props.lastMessageSeenTimeStampUserA = now;
+    else
+      this.props.lastMessageSeenTimeStampUserB = now;
   }
 }

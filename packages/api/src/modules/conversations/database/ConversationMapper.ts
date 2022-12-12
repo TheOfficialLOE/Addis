@@ -19,7 +19,10 @@ export class ConversationMapper implements Mapper<ConversationSchema, Conversati
       props: {
         userA: this.userMapper.toDomain(schema.userA),
         userB: this.userMapper.toDomain(schema.userB),
-        messages: schema.messages ? schema.messages.map(message => this.messageMapper.toDomain(message)) : [],
+        messages: schema.messages.map(message => this.messageMapper.toDomain(message)),
+        lastMessage: this.messageMapper.toDomain(schema.lastMessage),
+        lastMessageSeenTimeStampUserA: schema.lastMessageSeenTimeStampUserA,
+        lastMessageSeenTimeStampUserB: schema.lastMessageSeenTimeStampUserB
       }
     });
   }
@@ -29,7 +32,10 @@ export class ConversationMapper implements Mapper<ConversationSchema, Conversati
       _id: new Types.ObjectId(entity.id),
       userA: this.userMapper.toSchema(entity.userA),
       userB: this.userMapper.toSchema(entity.userB),
-      messages: entity.messages ? entity.messages.map(message => this.messageMapper.toSchema(message)): [],
+      messages: entity.messages.map(message => this.messageMapper.toSchema(message)),
+      lastMessage: this.messageMapper.toSchema(entity.lastMessage),
+      lastMessageSeenTimeStampUserA: entity.lastMessageSeenTimeStampUserA,
+      lastMessageSeenTimeStampUserB: entity.lastMessageSeenTimeStampUserB
     };
   }
 }

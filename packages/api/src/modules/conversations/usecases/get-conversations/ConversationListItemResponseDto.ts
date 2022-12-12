@@ -16,7 +16,8 @@ export class ConversationListItemResponseDto {
 
   lastMessage: {
     authorId: string;
-    content: string
+    content: string;
+    sentAt: number;
   };
 
   unread: number;
@@ -25,18 +26,19 @@ export class ConversationListItemResponseDto {
     return {
       id: conversation._id,
       userA: {
-        id: conversation.creator._id,
-        name: conversation.creator.name,
-        username: conversation.creator.username
+        id: conversation.userA._id,
+        name: conversation.userA.name,
+        username: conversation.userA.username
       },
       userB: {
-        id: conversation.recipient._id,
-        name: conversation.recipient.name,
-        username: conversation.recipient.username
+        id: conversation.userB._id,
+        name: conversation.userB.name,
+        username: conversation.userB.username
       },
       lastMessage: {
         authorId: conversation.lastMessage.author,
-        content: conversation.lastMessage.content
+        content: conversation.lastMessage.content,
+        sentAt: conversation.lastMessage.sentAt
       },
       unread: conversation.unread,
     };
