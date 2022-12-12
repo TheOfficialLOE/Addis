@@ -19,7 +19,9 @@ const conversationsSlice = createSlice({
         lastMessage: {
           authorId: message.authorId,
           content: message.content
-        }
+        },
+        // todo: -------------------------------------
+        unread: 0
       });
     },
   },

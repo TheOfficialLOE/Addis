@@ -53,19 +53,19 @@ const Index = () => {
           >
             <div className="w-12 h-12 avatar justify-center items-center rounded-xl bg-accent">
               <p className="text-accent-content font-bold">{
-                conversation.creator.id === user.id ? conversation.recipient.name[0] : user.name[0]
+                conversation.userA.id === user.id ? conversation.userB.name[0] : user.name[0]
               }</p>
             </div>
             <div className="ml-4 flex flex-col items-start">
               <p className="text-white font-bold">{
-                conversation.creator.id === user.id ? conversation.recipient.name : conversation.creator.name
+                conversation.userA.id === user.id ? conversation.userB.name : conversation.userA.name
               }</p>
               <p className="text-sm mt-2">{conversation.lastMessage.content}</p>
             </div>
             <div className="flex flex-col items-end items-end grow">
               <p>8:52 PM</p>
               <div className="badge badge-accent mt-2">
-                1500
+                {conversation.unread}
               </div>
             </div>
           </li>
@@ -81,6 +81,41 @@ const Index = () => {
                   message.authorId === user.id ? "bg-primary text-primary-content" : "bg-secondary text-secondary-content"
                 } p-4 rounded-xl`}>
                   <p>{message.content}</p>
+                  {message.authorId === user.id && (
+                    conversation.userA === user.id ? (
+                      message.sentAt <= conversation.lastMessageSeenTimeStampUserB ?
+                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-checks" width="20"
+                             height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M7 12l5 5l10 -10"></path>
+                          <path d="M2 12l5 5m5 -5l5 -5"></path>
+                        </svg> :
+                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-check" width="20"
+                             height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M5 12l5 5l10 -10"></path>
+                        </svg>
+                    ) : (
+                      conversation.userB === user.id && (
+                        message.sentAt <= conversation.lastMessageSeenTimeStampUserA ?
+                          <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-checks" width="20"
+                               height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                               stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M7 12l5 5l10 -10"></path>
+                            <path d="M2 12l5 5m5 -5l5 -5"></path>
+                          </svg> :
+                          <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-check" width="20"
+                               height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                               stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M5 12l5 5l10 -10"></path>
+                          </svg>
+                      )
+                    )
+                  )}
                 </div>
               </div>
             })}

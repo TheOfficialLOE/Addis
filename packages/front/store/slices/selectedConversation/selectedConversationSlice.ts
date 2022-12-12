@@ -6,9 +6,11 @@ import { OnMessageEvent } from "../../../socket/types";
 
 const initialState: SelectedConversation = {
   id: "",
-  creatorId: "",
-  recipientId: "",
-  messages: []
+  userA: "",
+  userB: "",
+  messages: [],
+  lastMessageSeenTimeStampUserA: 0,
+  lastMessageSeenTimeStampUserB: 0
 };
 
 const selectedConversationSlice = createSlice({

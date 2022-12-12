@@ -14,6 +14,9 @@ export class GetConversationByIdResponseDto {
     sentAt: number;
   }[];
 
+  lastMessageSeenTimeStampUserA: number;
+  lastMessageSeenTimeStampUserB: number;
+
   public static new(conversation: ConversationEntity): GetConversationByIdResponseDto {
     return {
       id: conversation.id,
@@ -26,7 +29,9 @@ export class GetConversationByIdResponseDto {
           content: message.content,
           sentAt: message.sentAt
         }
-      ))
+      )),
+      lastMessageSeenTimeStampUserA: conversation.lastMessageSeenTimeStampUserA,
+      lastMessageSeenTimeStampUserB: conversation.lastMessageSeenTimeStampUserB
     };
   }
 }

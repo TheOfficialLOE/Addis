@@ -12,7 +12,10 @@ export type LastMessage = {
 
 export type Conversation = {
   id: string;
-  creator: UserInConversation;
-  recipient: UserInConversation;
+  userA: UserInConversation;
+  userB: UserInConversation;
   lastMessage: LastMessage;
+  unread: number;
+  lastMessageSeenTimeStampUserA: number;
+  lastMessageSeenTimeStampUserB: number;
 };

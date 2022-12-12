@@ -14,6 +14,10 @@ export type SerializedConversation = {
     name: string;
     username: string;
   };
+
+  // todo:------------------------ TMPPPPPPPPPPPPPPPPPPPPPP
+  lastMessageSeenTimeStampUserA: number;
+  lastMessageSeenTimeStampUserB: number;
 };
 
 export const toSerializedConversation = (conversation: ConversationEntity): SerializedConversation => {
@@ -28,6 +32,8 @@ export const toSerializedConversation = (conversation: ConversationEntity): Seri
       id: conversation.userB.id,
       name: conversation.userB.name,
       username: conversation.userB.username
-    }
+    },
+    lastMessageSeenTimeStampUserA: conversation.lastMessageSeenTimeStampUserA,
+    lastMessageSeenTimeStampUserB: conversation.lastMessageSeenTimeStampUserB
   }
 }
