@@ -25,8 +25,8 @@ export class ConversationEntity extends Entity<ConversationEntityProps> {
         ...props,
         messages: [],
         lastMessage: null,
-        lastMessageSeenTimeStampUserA: null,
-        lastMessageSeenTimeStampUserB: null
+        lastMessageSeenTimeStampUserA: 0,
+        lastMessageSeenTimeStampUserB: 0
       }
     });
   }

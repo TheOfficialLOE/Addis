@@ -10,12 +10,15 @@ import {
 import { Socket } from "socket.io-client";
 import { OnMessageEvent } from "../socket/types";
 import { socket } from "../socket";
+import { postLastSeenMessages } from "../util/api";
 
 export const socketMiddleWare = (socket: Socket) => {
-  return ({ dispatch }) => {
+  return ({ dispatch, getState }) => {
     socket.on("onMessage", (payload: OnMessageEvent) => {
       dispatch(addMessage(payload));
       dispatch(updateConversationForNewMessage(payload));
+      if (getState().selectedConversation.id === payload.conversation.id)
+        postLastSeenMessages(payload.conversation.id);
     });
     socket.on("onSeenMessages", (payload) => {
       dispatch(updateLastMessageSeen(payload));

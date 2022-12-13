@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { selectConversations } from "../store/slices/conversations/conversationsSlice";
+import { selectConversations, updateOpenConversationId } from "../store/slices/conversations/conversationsSlice";
 import { selectUser } from "../store/slices/user/userSlice";
 import {
   selectConversation,
@@ -15,7 +15,7 @@ import ScrollableFeed from "react-scrollable-feed";
 import { postLastSeenMessages } from "../util/api";
 
 const Index = () => {
-  const conversations = useAppSelector(selectConversations);
+  const { conversations } = useAppSelector(selectConversations);
   const conversation = useAppSelector(selectConversation);
   const [message, setMessage] = useState<string>("");
   const [currentConversationId, setCurrentConversationId] = useState<string>("");
@@ -30,6 +30,7 @@ const Index = () => {
   useEffect(() => {
     if (currentConversationId !== "") {
       dispatch(fetchConversationThunk(currentConversationId));
+      dispatch(updateOpenConversationId(currentConversationId));
       postLastSeenMessages(currentConversationId);
     }
   }, [currentConversationId, dispatch]);
@@ -65,10 +66,14 @@ const Index = () => {
               <p className="text-sm mt-2">{conversation.lastMessage.content}</p>
             </div>
             <div className="flex flex-col items-end items-end grow">
-              <p>8:52 PM</p>
-              <div className="badge badge-accent mt-2">
+              <p>{
+                new Date(conversation.lastMessage.sentAt)
+                  .toLocaleString("en-US", { hour: "numeric", minute: "numeric" , hour12: true })
+              }
+              </p>
+              {conversation.unread > 0 && <div className="badge badge-accent mt-2">
                 {conversation.unread}
-              </div>
+              </div>}
             </div>
           </li>
         ))}
@@ -118,6 +123,11 @@ const Index = () => {
                       )
                     )
                   )}
+                  <p>{
+                    new Date(message.sentAt)
+                      .toLocaleString("en-US", { hour: "numeric", minute: "numeric" , hour12: true })
+                  }
+                  </p>
                 </div>
               </div>
             })}

@@ -8,6 +8,7 @@ export type UserInConversation = {
 export type LastMessage = {
   authorId: string;
   content: string;
+  sentAt: number;
 }
 
 export type Conversation = {
