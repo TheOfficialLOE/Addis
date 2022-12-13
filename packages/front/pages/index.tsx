@@ -12,6 +12,7 @@ import {
 } from "../store/slices/selectedConversation/selectedConversationThunks";
 import { fetchUserThunk } from "../store/slices/user/userThunks";
 import ScrollableFeed from "react-scrollable-feed";
+import { postLastSeenMessages } from "../util/api";
 
 const Index = () => {
   const conversations = useAppSelector(selectConversations);
@@ -29,6 +30,7 @@ const Index = () => {
   useEffect(() => {
     if (currentConversationId !== "") {
       dispatch(fetchConversationThunk(currentConversationId));
+      postLastSeenMessages(currentConversationId);
     }
   }, [currentConversationId, dispatch]);
 

@@ -15,6 +15,12 @@ import {
   CreateConversationUseCaseImpl
 } from "@api/modules/conversations/usecases/create-conversation/CreateConversationUseCaseImpl";
 import { MessageMapper } from "@api/modules/conversations/database/MessageMapper";
+import {
+  UpdateLastMessageSeenController
+} from "@api/modules/conversations/usecases/update-last-seen-message/UpdateLastMessageSeenController";
+import {
+  UpdateLastMessageSeenUseCaseImpl
+} from "@api/modules/conversations/usecases/update-last-seen-message/UpdateLastMessageSeenUseCaseImpl";
 
 @Module({
   imports: [
@@ -25,6 +31,7 @@ import { MessageMapper } from "@api/modules/conversations/database/MessageMapper
     CreateConversationController,
     SendMessageController,
     GetConversationsController,
+    UpdateLastMessageSeenController
   ],
   providers: [
     ConversationsRepository,
@@ -32,6 +39,7 @@ import { MessageMapper } from "@api/modules/conversations/database/MessageMapper
     MessageMapper,
     CreateConversationUseCaseImpl,
     SendMessageUseCaseImpl,
+    UpdateLastMessageSeenUseCaseImpl
   ]
 })
 export class ConversationsModule {

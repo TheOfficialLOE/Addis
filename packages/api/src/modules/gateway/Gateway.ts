@@ -52,4 +52,12 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect {
     // if (authorSocket) authorSocket.emit('onMessage', payload);
     // if (recipientSocket) recipientSocket.emit('onMessage', payload);
   }
+
+  @OnEvent("messages-seen")
+  async foo(payload: {
+    conversationId: string,
+    userId: string
+  }) {
+    this.server.emit("onSeenMessages", payload);
+  }
 }

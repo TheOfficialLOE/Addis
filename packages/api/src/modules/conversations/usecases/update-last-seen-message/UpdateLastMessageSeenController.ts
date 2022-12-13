@@ -7,12 +7,16 @@ import {
 } from "@api/modules/conversations/usecases/update-last-seen-message/UpdateLastMessageSeenUseCase";
 import { AuthUser } from "@api/core/decorators/AuthUserDecorator";
 import { UserEntity } from "@api/modules/auth/domain/user/UserEntity";
+import { EventEmitter2 } from "@nestjs/event-emitter";
+import { IsAuthentic } from "@api/core/decorators/IsAuthenticDecorator";
 
 @Controller("conversations")
+@IsAuthentic()
 export class UpdateLastMessageSeenController {
   constructor(
     @Inject(UpdateLastMessageSeenUseCaseImpl)
-    private readonly updateLastMessageSeenUseCase: UpdateLastMessageSeenUseCase
+    private readonly updateLastMessageSeenUseCase: UpdateLastMessageSeenUseCase,
+    private readonly eventEmitter: EventEmitter2
   ) {}
 
   @Post("update-last-seen-message/:id")
@@ -23,6 +27,10 @@ export class UpdateLastMessageSeenController {
     await this.updateLastMessageSeenUseCase.execute({
       conversationId,
       user
+    });
+    this.eventEmitter.emit("messages-seen", {
+      conversationId,
+      userId: user.id
     });
   }
 }

@@ -37,3 +37,6 @@ export const postMessage = async (data: SendMessageRequestDto & {
   await axiosInstance.post("conversations/"+ data.conversationId, {
     message: data.message,
   }, config);
+
+export const postLastSeenMessages = async (id: string) =>
+  await axiosInstance.post("conversations/update-last-seen-message/" + id, {}, config);

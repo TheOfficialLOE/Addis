@@ -5,7 +5,7 @@ import {
 import { userReducer } from "./slices/user/userSlice";
 import {
   addMessage,
-  selectedConversationReducer,
+  selectedConversationReducer, updateLastMessageSeen,
 } from "./slices/selectedConversation/selectedConversationSlice";
 import { Socket } from "socket.io-client";
 import { OnMessageEvent } from "../socket/types";
@@ -16,6 +16,9 @@ export const socketMiddleWare = (socket: Socket) => {
     socket.on("onMessage", (payload: OnMessageEvent) => {
       dispatch(addMessage(payload));
       dispatch(updateConversationForNewMessage(payload));
+    });
+    socket.on("onSeenMessages", (payload) => {
+      dispatch(updateLastMessageSeen(payload));
     });
     return next => action => {
       return next(action);
