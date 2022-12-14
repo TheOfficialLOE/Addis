@@ -63,7 +63,9 @@ const Index = () => {
               <p className="text-white font-bold">{
                 conversation.userA.id === user.id ? conversation.userB.name : conversation.userA.name
               }</p>
-              <p className="text-sm mt-2">{conversation.lastMessage.content}</p>
+              <p className="text-sm mt-2">{
+                conversation.lastMessage.authorId === user.id && "YOU: "
+              }{conversation.lastMessage.content}</p>
             </div>
             <div className="flex flex-col items-end items-end grow">
               <p>{
