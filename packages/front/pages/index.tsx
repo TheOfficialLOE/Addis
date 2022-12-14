@@ -56,7 +56,7 @@ const Index = () => {
           >
             <div className="w-12 h-12 avatar justify-center items-center rounded-xl bg-accent">
               <p className="text-accent-content font-bold">{
-                conversation.userA.id === user.id ? conversation.userB.name[0] : user.name[0]
+                conversation.userA.id === user.id ? conversation.userB.name[0] : conversation.userA.name[0]
               }</p>
             </div>
             <div className="ml-4 flex flex-col items-start">
