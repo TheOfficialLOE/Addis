@@ -2,7 +2,7 @@ import { sendMessageThunk } from "../../store/slices/selectedConversation/select
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { selectConversation } from "../../store/slices/selectedConversation/selectedConversationSlice";
-import EmojiPicker from "../../pages/emoji";
+import EmojiPicker from "./EmojiPicker";
 
 const MessageForm = () => {
   const [message, setMessage] = useState<string>("");

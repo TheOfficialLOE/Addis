@@ -1,12 +1,14 @@
 import { Message, SelectedConversation } from "../../store/slices/selectedConversation/types";
 import { User } from "../../store/slices/user/userSlice";
-import { Conversation } from "../../store/slices/conversations/types";
+import { useState } from "react";
+import EmojiReactionBar from "./EmojiReactionBar";
 
 const MessageBubble = (props: {
   user: User,
   conversation: SelectedConversation,
   message: Message
 }) => {
+  const [showReactionBar, setShowReactBar] = useState<boolean>(false);
   const user = props.user;
   const {
     userA,
@@ -24,10 +26,21 @@ const MessageBubble = (props: {
 
   const isUserTheAuthor = authorId === user.id;
 
-  return <div key={id} className={`mt-4 ${isUserTheAuthor && "text-right"}`}>
+  return <div key={id} className={`relative mt-4 ${isUserTheAuthor && "text-right"}`}>
     <div className={`inline-block ${
       isUserTheAuthor ? "bg-primary text-primary-content" : "bg-secondary text-secondary-content"
-    } p-4 rounded-xl`}>
+    } p-4 rounded-xl`}
+         onMouseOver={() => {
+           setShowReactBar(true)
+         }}
+         onMouseOut={() => {
+           setShowReactBar(false);
+         }}
+    >
+      {showReactionBar && <div className={`absolute bottom-12 ${isUserTheAuthor ? "right-24" : "left-28"}`}>
+        <EmojiReactionBar />
+      </div>
+      }
       <p>{content}</p>
       {isUserTheAuthor && (
         userA === user.id ? (
