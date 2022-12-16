@@ -33,7 +33,7 @@ const conversationsSlice = createSlice({
     updateOpenConversationId: (state, action: PayloadAction<string>) => {
       state.openConversationId = action.payload;
       const index = state.conversations.findIndex((c) => c.id === action.payload);
-      state.conversations[index].unread = 0
+      state.conversations[index].unread = 0;
     }
   },
   extraReducers: (builder) => {

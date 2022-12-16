@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 import { fetchUserThunk } from "./userThunks";
 
-type User = {
+export type User = {
   id: string,
   email: string,
   name: string,

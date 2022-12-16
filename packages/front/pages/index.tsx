@@ -8,18 +8,14 @@ import {
 import { fetchConversationsThunk } from "../store/slices/conversations/conversationsThunks";
 import {
   fetchConversationThunk,
-  sendMessageThunk,
 } from "../store/slices/selectedConversation/selectedConversationThunks";
 import { fetchUserThunk } from "../store/slices/user/userThunks";
-import ScrollableFeed from "react-scrollable-feed";
 import { postLastSeenMessages } from "../util/api";
+import ConversationsList from "../components/conversations/ConversationsList";
+import MessagesScreen from "../components/messages/MessagesScreen";
 
 const Index = () => {
-  const { conversations } = useAppSelector(selectConversations);
-  const conversation = useAppSelector(selectConversation);
-  const [message, setMessage] = useState<string>("");
-  const [currentConversationId, setCurrentConversationId] = useState<string>("");
-  const user = useAppSelector(selectUser);
+  const { openConversationId } = useAppSelector(selectConversations);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -28,136 +24,18 @@ const Index = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (currentConversationId !== "") {
-      dispatch(fetchConversationThunk(currentConversationId));
-      dispatch(updateOpenConversationId(currentConversationId));
-      postLastSeenMessages(currentConversationId);
+    if (openConversationId !== "") {
+      dispatch(fetchConversationThunk(openConversationId));
+      dispatch(updateOpenConversationId(openConversationId));
+      postLastSeenMessages(openConversationId);
     }
-  }, [currentConversationId, dispatch]);
-
-  const clickHandler = async (e) => {
-    e.preventDefault();
-    dispatch(sendMessageThunk({
-      conversationId: conversation.id,
-      message
-    }));
-    setMessage("");
-  };
+  }, [openConversationId, dispatch]);
 
   return <div className="h-screen">
     <div className="grid grid-cols-[min-content_auto] grid-flow-dense h-full">
-      <ul className="w-96 bg-neutral p-4">
-        {conversations.map(conversation => (
-          <li key={conversation.id} className={`btn justify-start w-full h-20 ${
-            conversation.id === currentConversationId && "btn-primary"
-          }`} onClick={() => {
-            setCurrentConversationId(conversation.id);
-          }}
-          >
-            <div className="w-12 h-12 avatar justify-center items-center rounded-xl bg-accent">
-              <p className="text-accent-content font-bold">{
-                conversation.userA.id === user.id ? conversation.userB.name[0] : conversation.userA.name[0]
-              }</p>
-            </div>
-            <div className="ml-4 flex flex-col items-start">
-              <p className="text-white font-bold">{
-                conversation.userA.id === user.id ? conversation.userB.name : conversation.userA.name
-              }</p>
-              <p className="text-sm mt-2">{
-                conversation.lastMessage.authorId === user.id && "YOU: "
-              }{conversation.lastMessage.content}</p>
-            </div>
-            <div className="flex flex-col items-end items-end grow">
-              <p>{
-                new Date(conversation.lastMessage.sentAt)
-                  .toLocaleString("en-US", { hour: "numeric", minute: "numeric" , hour12: true })
-              }
-              </p>
-              {conversation.unread > 0 && <div className="badge badge-accent mt-2">
-                {conversation.unread}
-              </div>}
-            </div>
-          </li>
-        ))}
-      </ul>
-      {currentConversationId &&
-        <div className="h-screen flex flex-col">
-        <ScrollableFeed>
-          <div className="mx-8">
-            {currentConversationId && conversation.messages.map(message => {
-              return <div key={message.id} className={`mt-4 ${message.authorId === user.id && "text-right"}`}>
-                <div className={`inline-block ${
-                  message.authorId === user.id ? "bg-primary text-primary-content" : "bg-secondary text-secondary-content"
-                } p-4 rounded-xl`}>
-                  <p>{message.content}</p>
-                  {message.authorId === user.id && (
-                    conversation.userA === user.id ? (
-                      message.sentAt <= conversation.lastMessageSeenTimeStampUserB ?
-                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-checks" width="20"
-                             height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                             stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                          <path d="M7 12l5 5l10 -10"></path>
-                          <path d="M2 12l5 5m5 -5l5 -5"></path>
-                        </svg> :
-                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-check" width="20"
-                             height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                             stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                          <path d="M5 12l5 5l10 -10"></path>
-                        </svg>
-                    ) : (
-                      conversation.userB === user.id && (
-                        message.sentAt <= conversation.lastMessageSeenTimeStampUserA ?
-                          <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-checks" width="20"
-                               height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                               stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M7 12l5 5l10 -10"></path>
-                            <path d="M2 12l5 5m5 -5l5 -5"></path>
-                          </svg> :
-                          <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-check" width="20"
-                               height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                               stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M5 12l5 5l10 -10"></path>
-                          </svg>
-                      )
-                    )
-                  )}
-                  <p>{
-                    new Date(message.sentAt)
-                      .toLocaleString("en-US", { hour: "numeric", minute: "numeric" , hour12: true })
-                  }
-                  </p>
-                </div>
-              </div>
-            })}
-          </div>
-        </ScrollableFeed>
-        {/*<div className="grow overflow-auto">*/}
-        {/*<ul className="mr-8 ">*/}
-        {/*  {currentConversationId && conversation.messages.map(message => {*/}
-        {/*    return <li key={message.id} className={`mt-4 ${message.authorId === user.id && "text-right"}`}>*/}
-        {/*      <p className={`inline-block ${*/}
-        {/*        message.authorId === user.id ? "bg-primary text-primary-content" : "bg-secondary text-secondary-content"*/}
-        {/*      } p-4 rounded-xl`}>{message.content}</p>*/}
-        {/*    </li>*/}
-        {/*  })}*/}
-        {/*</ul>*/}
-        {/*</div>*/}
-        <form className="flex flex-row m-8" onSubmit={clickHandler}>
-          <input type="text" className="input input-bordered w-full" onChange={(e) => {
-            setMessage(e.target.value);
-          }
-          } value={message}/>
-          <button className="btn btn-ghost rounded-full ml-4 px-0 w-12 h-12">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-            </svg>
-          </button>
-        </form>
-      </div>
+      <ConversationsList />
+      {openConversationId &&
+        <MessagesScreen />
       }
     </div>
   </div>
