@@ -16,7 +16,6 @@ export class UpdateLastMessageSeenController {
   constructor(
     @Inject(UpdateLastMessageSeenUseCaseImpl)
     private readonly updateLastMessageSeenUseCase: UpdateLastMessageSeenUseCase,
-    private readonly eventEmitter: EventEmitter2
   ) {}
 
   @Post("update-last-seen-message/:id")
@@ -27,10 +26,6 @@ export class UpdateLastMessageSeenController {
     await this.updateLastMessageSeenUseCase.execute({
       conversationId,
       user
-    });
-    this.eventEmitter.emit("messages-seen", {
-      conversationId,
-      userId: user.id
     });
   }
 }

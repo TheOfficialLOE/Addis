@@ -1,6 +1,6 @@
 import {
   SendMessageUseCase,
-  SendMessageUseCasePayload, SendMessageUseCaseResponse,
+  SendMessageUseCasePayload,
 } from "@api/modules/conversations/usecases/send-message/SendMessageUseCase";
 import { Inject, Injectable } from "@nestjs/common";
 import { ConversationsRepository } from "@api/modules/conversations/database/ConversationsRepository";
@@ -8,6 +8,7 @@ import { ConversationsRepositoryPort } from "@api/modules/conversations/database
 import { UserRepository } from "@api/modules/auth/database/user/UserRepository";
 import { UserRepositoryPort } from "@api/modules/auth/database/user/UserRepositoryPort";
 import { MessageEntity } from "@api/modules/conversations/domain/MessageEntity";
+import { EventEmitter2 } from "@nestjs/event-emitter";
 
 @Injectable()
 export class SendMessageUseCaseImpl implements SendMessageUseCase {
@@ -15,10 +16,11 @@ export class SendMessageUseCaseImpl implements SendMessageUseCase {
     @Inject(UserRepository)
     private readonly userRepository: UserRepositoryPort,
     @Inject(ConversationsRepository)
-    private readonly conversationRepository: ConversationsRepositoryPort
+    private readonly conversationRepository: ConversationsRepositoryPort,
+    private readonly eventEmitter: EventEmitter2
   ) {}
 
-  async execute(payload: SendMessageUseCasePayload): Promise<SendMessageUseCaseResponse> {
+  async execute(payload: SendMessageUseCasePayload): Promise<void> {
     const author = await this.userRepository.findOne({
       _id: payload.authorId
     });
@@ -31,9 +33,9 @@ export class SendMessageUseCaseImpl implements SendMessageUseCase {
     });
     conversation.newMessage(message);
     await this.conversationRepository.updateOne(conversation);
-    return {
+    this.eventEmitter.emit("message-created", {
       conversation,
       message
-    };
+    });
   }
 }
