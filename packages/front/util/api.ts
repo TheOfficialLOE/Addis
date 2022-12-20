@@ -40,3 +40,13 @@ export const postMessage = async (data: SendMessageRequestDto & {
 
 export const postLastSeenMessages = async (id: string) =>
   await axiosInstance.post("conversations/update-last-seen-message/" + id, {}, config);
+
+export const postReaction = async (data: {
+  conversationId: string,
+  messageId: string,
+  reaction: string
+}) =>
+  await axiosInstance.post("conversations/reaction/" + data.conversationId, {
+    messageId: data.messageId,
+    reaction: data.reaction
+  }, config);

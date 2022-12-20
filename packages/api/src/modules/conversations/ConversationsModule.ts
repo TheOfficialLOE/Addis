@@ -21,6 +21,8 @@ import {
 import {
   UpdateLastMessageSeenUseCaseImpl
 } from "@api/modules/conversations/usecases/update-last-seen-message/UpdateLastMessageSeenUseCaseImpl";
+import { AddReactionUseCaseImpl } from "@api/modules/conversations/usecases/add-reaction/AddReactionUseCaseImpl";
+import { AddReactionController } from "@api/modules/conversations/usecases/add-reaction/AddReactionController";
 
 @Module({
   imports: [
@@ -31,7 +33,8 @@ import {
     CreateConversationController,
     SendMessageController,
     GetConversationsController,
-    UpdateLastMessageSeenController
+    UpdateLastMessageSeenController,
+    AddReactionController
   ],
   providers: [
     ConversationsRepository,
@@ -39,7 +42,8 @@ import {
     MessageMapper,
     CreateConversationUseCaseImpl,
     SendMessageUseCaseImpl,
-    UpdateLastMessageSeenUseCaseImpl
+    UpdateLastMessageSeenUseCaseImpl,
+    AddReactionUseCaseImpl
   ]
 })
 export class ConversationsModule {

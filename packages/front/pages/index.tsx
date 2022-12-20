@@ -1,10 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { selectConversations, updateOpenConversationId } from "../store/slices/conversations/conversationsSlice";
-import { selectUser } from "../store/slices/user/userSlice";
-import {
-  selectConversation,
-} from "../store/slices/selectedConversation/selectedConversationSlice";
 import { fetchConversationsThunk } from "../store/slices/conversations/conversationsThunks";
 import {
   fetchConversationThunk,

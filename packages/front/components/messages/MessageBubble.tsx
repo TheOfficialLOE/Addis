@@ -2,6 +2,10 @@ import { Message, SelectedConversation } from "../../store/slices/selectedConver
 import { User } from "../../store/slices/user/userSlice";
 import { useState } from "react";
 import EmojiReactionBar from "./EmojiReactionBar";
+import { postReaction } from "../../util/api";
+import { Emoji, EmojiStyle } from "emoji-picker-react";
+import { toUnified } from "../../util/toUnified";
+import { EmojiReaction } from "@api/modules/conversations/domain/MessageEntity";
 
 const MessageBubble = (props: {
   user: User,
@@ -11,6 +15,7 @@ const MessageBubble = (props: {
   const [showReactionBar, setShowReactBar] = useState<boolean>(false);
   const user = props.user;
   const {
+    id: conversationId,
     userA,
     lastMessageSeenTimeStampUserA,
     userB,
@@ -18,15 +23,24 @@ const MessageBubble = (props: {
   } = props.conversation;
 
   const {
-    id,
+    id: messageId,
     authorId,
     content,
+    reaction,
     sentAt
   } = props.message;
 
+  const onEmojiReactionSelect = async (e: string) => {
+    await postReaction({
+      conversationId,
+      messageId: messageId,
+      reaction: e
+    });
+  }
+
   const isUserTheAuthor = authorId === user.id;
 
-  return <div key={id} className={`relative mt-4 ${isUserTheAuthor && "text-right"}`}>
+  return <div key={messageId} className={`relative mt-4 ${isUserTheAuthor && "text-right"}`}>
     <div className={`inline-block ${
       isUserTheAuthor ? "bg-primary text-primary-content" : "bg-secondary text-secondary-content"
     } p-4 rounded-xl`}
@@ -38,7 +52,7 @@ const MessageBubble = (props: {
          }}
     >
       {showReactionBar && <div className={`absolute bottom-12 ${isUserTheAuthor ? "right-24" : "left-28"}`}>
-        <EmojiReactionBar />
+        <EmojiReactionBar onSelect={onEmojiReactionSelect} />
       </div>
       }
       <p>{content}</p>
@@ -82,6 +96,7 @@ const MessageBubble = (props: {
           .toLocaleString("en-US", { hour: "numeric", minute: "numeric" , hour12: true })
       }
       </p>
+      {reaction.length > 0 && <Emoji unified={toUnified(reaction as EmojiReaction)} emojiStyle={EmojiStyle.NATIVE}/>}
     </div>
   </div>
 };

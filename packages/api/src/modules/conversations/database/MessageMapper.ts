@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Mapper } from "@api/core/base-classes/Mapper";
 import { MessagesSchema } from "@api/modules/conversations/database/MessageSchema";
-import { MessageEntity } from "@api/modules/conversations/domain/MessageEntity";
+import { EmojiReaction, MessageEntity } from "@api/modules/conversations/domain/MessageEntity";
 import { UserMapper } from "@api/modules/auth/database/user/UserMapper";
 import { Types } from "mongoose";
 
@@ -17,7 +17,8 @@ export class MessageMapper implements Mapper<MessagesSchema, MessageEntity> {
       props: {
         author: this.userMapper.toDomain(schema.author),
         content: schema.content,
-        sentAt: schema.sentAt
+        sentAt: schema.sentAt,
+        reaction: schema.reaction as EmojiReaction
       }
     });
   }
@@ -27,7 +28,8 @@ export class MessageMapper implements Mapper<MessagesSchema, MessageEntity> {
       _id: new Types.ObjectId(entity.id),
       author: this.userMapper.toSchema(entity.author),
       content: entity.content,
-      sentAt: entity.sentAt
+      sentAt: entity.sentAt,
+      reaction: entity.reaction
     };
   }
 }

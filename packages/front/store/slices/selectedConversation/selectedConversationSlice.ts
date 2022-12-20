@@ -20,7 +20,10 @@ const selectedConversationSlice = createSlice({
     addMessage: (state, action: PayloadAction<OnMessageEvent>) => {
       const { conversation, message } = action.payload;
       if (conversation.id === state.id)
-        state.messages.push(message);
+        state.messages.push({
+          ...message,
+          reaction: ""
+        });
     },
     updateLastMessageSeen: (state, action) => {
       if (state.id === action.payload.conversationId) {
@@ -28,6 +31,12 @@ const selectedConversationSlice = createSlice({
           state.lastMessageSeenTimeStampUserA = Date.now();
         else if (state.userB === action.payload.userId)
           state.lastMessageSeenTimeStampUserB = Date.now();
+      }
+    },
+    addReaction: (state, action) => {
+      if (state.id === action.payload.conversationId) {
+        const index = state.messages.findIndex(m => m.id === action.payload.messageId);
+        state.messages[index].reaction = action.payload.reaction;
       }
     }
   },
@@ -40,4 +49,4 @@ const selectedConversationSlice = createSlice({
 
 export const selectedConversationReducer = selectedConversationSlice.reducer;
 export const selectConversation = (state: RootState) => state.selectedConversation;
-export const { addMessage, updateLastMessageSeen } = selectedConversationSlice.actions;
+export const { addMessage, updateLastMessageSeen, addReaction } = selectedConversationSlice.actions;

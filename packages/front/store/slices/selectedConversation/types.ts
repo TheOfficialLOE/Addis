@@ -1,9 +1,9 @@
-import { Conversation } from "../conversations/types";
 
 export type Message = {
-  id: string,
-  authorId: string,
-  content: string
+  id: string;
+  authorId: string;
+  reaction: string;
+  content: string;
   sentAt: number;
 };
 

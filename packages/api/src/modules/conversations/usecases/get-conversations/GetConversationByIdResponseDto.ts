@@ -11,6 +11,7 @@ export class GetConversationByIdResponseDto {
     id: string;
     authorId: string;
     content: string
+    reaction: string;
     sentAt: number;
   }[];
 
@@ -26,6 +27,7 @@ export class GetConversationByIdResponseDto {
         {
           id: message.id,
           authorId: message.author.id,
+          reaction: message.reaction,
           content: message.content,
           sentAt: message.sentAt
         }

@@ -4,7 +4,7 @@ import {
 } from "./slices/conversations/conversationsSlice";
 import { userReducer } from "./slices/user/userSlice";
 import {
-  addMessage,
+  addMessage, addReaction,
   selectedConversationReducer, updateLastMessageSeen,
 } from "./slices/selectedConversation/selectedConversationSlice";
 import { Socket } from "socket.io-client";
@@ -22,6 +22,9 @@ export const socketMiddleWare = (socket: Socket) => {
     });
     socket.on("onSeenMessages", (payload) => {
       dispatch(updateLastMessageSeen(payload));
+    });
+    socket.on("onReaction", (payload) => {
+      dispatch(addReaction(payload));
     });
     return next => action => {
       return next(action);

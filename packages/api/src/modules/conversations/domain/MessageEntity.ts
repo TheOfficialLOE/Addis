@@ -1,10 +1,20 @@
 import { Entity } from "@api/core/base-classes/Entity";
 import { UserEntity as User } from "@api/modules/auth/domain/user/UserEntity";
 
+export enum EmojiReaction {
+  ANGRY = "angry",
+  SAD = "sad",
+  SURPRISE = "surprise",
+  HAPPY = "happy",
+  LOVE = "love",
+  SATISFACTION = "satisfaction"
+}
+
 interface MessageEntityProps {
   author: User;
   content: string;
   sentAt: number;
+  reaction?: EmojiReaction;
 }
 
 interface CreateMessageEntityProps {
@@ -17,7 +27,7 @@ export class MessageEntity extends Entity<MessageEntityProps> {
     return new MessageEntity({
       props: {
         ...props,
-        sentAt: Date.now()
+        sentAt: Date.now(),
       }
     });
   }
@@ -32,5 +42,13 @@ export class MessageEntity extends Entity<MessageEntityProps> {
 
   get sentAt(): number {
     return this.props.sentAt;
+  }
+
+  get reaction(): EmojiReaction {
+    return this.props.reaction;
+  }
+
+  setReaction(reaction: EmojiReaction): void {
+    this.props.reaction = reaction;
   }
 }

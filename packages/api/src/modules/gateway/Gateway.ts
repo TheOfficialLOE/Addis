@@ -49,4 +49,13 @@ export class Gateway implements OnGatewayConnection, OnGatewayDisconnect {
   }) {
     this.server.emit("onSeenMessages", payload);
   }
+
+  @OnEvent("reaction-added")
+  async reactionAdded(payload: {
+    conversationId: string,
+    messageId: string,
+    reaction: string
+  }) {
+    this.server.emit("onReaction", payload);
+  }
 }

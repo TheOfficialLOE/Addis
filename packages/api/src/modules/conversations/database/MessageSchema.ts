@@ -13,4 +13,7 @@ export class MessagesSchema extends IdentifiableSchema {
 
   @Prop()
   sentAt: number;
+
+  @Prop()
+  reaction: string;
 }
