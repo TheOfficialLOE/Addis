@@ -6,6 +6,8 @@ import { postReaction } from "../../util/api";
 import { Emoji, EmojiStyle } from "emoji-picker-react";
 import { toUnified } from "../../util/toUnified";
 import { EmojiReaction } from "@api/modules/conversations/domain/MessageEntity";
+import DoubleCheck from "../icons/DoubleCheck";
+import Check from "../icons/Check";
 
 const MessageBubble = (props: {
   user: User,
@@ -41,7 +43,7 @@ const MessageBubble = (props: {
   const isUserTheAuthor = authorId === user.id;
 
   return <div key={messageId} className={`relative mt-4 ${isUserTheAuthor && "text-right"}`}>
-    <div className={`inline-block ${
+    <div className={`inline-flex flex-col ${
       isUserTheAuthor ? "bg-primary text-primary-content" : "bg-secondary text-secondary-content"
     } p-4 rounded-xl`}
          onMouseOver={() => {
@@ -51,52 +53,38 @@ const MessageBubble = (props: {
            setShowReactBar(false);
          }}
     >
-      {showReactionBar && <div className={`absolute bottom-12 ${isUserTheAuthor ? "right-24" : "left-28"}`}>
-        <EmojiReactionBar onSelect={onEmojiReactionSelect} />
-      </div>
-      }
-      <p>{content}</p>
-      {isUserTheAuthor && (
-        userA === user.id ? (
-          sentAt <= lastMessageSeenTimeStampUserB ?
-            <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-checks" width="20"
-                 height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path d="M7 12l5 5l10 -10"></path>
-              <path d="M2 12l5 5m5 -5l5 -5"></path>
-            </svg> :
-            <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-check" width="20"
-                 height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path d="M5 12l5 5l10 -10"></path>
-            </svg>
-        ) : (
-          userB === user.id && (
-            sentAt <= lastMessageSeenTimeStampUserA ?
-              <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-checks" width="20"
-                   height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                   stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M7 12l5 5l10 -10"></path>
-                <path d="M2 12l5 5m5 -5l5 -5"></path>
-              </svg> :
-              <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-check" width="20"
-                   height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                   stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M5 12l5 5l10 -10"></path>
-              </svg>
+      <div className="inline-flex items-center">
+        {showReactionBar && <div className={`absolute bottom-12 ${isUserTheAuthor ? "right-24" : "left-24"}`}>
+          <EmojiReactionBar onSelect={onEmojiReactionSelect} />
+        </div>
+        }
+        <p>{content}</p>
+        <p className={`${isUserTheAuthor && "mx-2"} ml-4`}>{
+          new Date(sentAt)
+            .toLocaleString("en-US", { hour: "numeric", minute: "numeric" , hour12: true })
+        }
+        </p>
+        {isUserTheAuthor && (
+          userA === user.id ? (
+            sentAt <= lastMessageSeenTimeStampUserB ?
+              <DoubleCheck /> :
+              <Check />
+          ) : (
+            userB === user.id && (
+              sentAt <= lastMessageSeenTimeStampUserA ?
+                <DoubleCheck /> :
+                <Check />
+            )
           )
-        )
-      )}
-      <p>{
-        new Date(sentAt)
-          .toLocaleString("en-US", { hour: "numeric", minute: "numeric" , hour12: true })
-      }
-      </p>
-      {reaction.length > 0 && <Emoji unified={toUnified(reaction as EmojiReaction)} emojiStyle={EmojiStyle.NATIVE}/>}
+        )}
+      </div>
+      <div className="block">
+        {reaction && <Emoji
+          unified={toUnified(reaction as EmojiReaction)}
+          size={18}
+          emojiStyle={EmojiStyle.NATIVE}
+        />}
+      </div>
     </div>
   </div>
 };
