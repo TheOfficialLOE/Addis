@@ -1,23 +1,22 @@
-import { sendMessageThunk } from "../../store/slices/selectedConversation/selectedConversationThunks";
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { useAppSelector } from "../../hooks/hooks";
 import { selectConversation } from "../../store/slices/selectedConversation/selectedConversationSlice";
 import EmojiPicker from "./EmojiPicker";
 import Send from "../icons/Send";
+import { postMessage } from "../../util/api";
 
 const MessageForm = () => {
   const [message, setMessage] = useState<string>("");
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
   const conversation = useAppSelector(selectConversation);
-  const dispatch = useAppDispatch();
 
   return <form className="flex flex-row m-8" onSubmit={(e) => {
     e.preventDefault();
     setShowEmojiPicker(false);
-    dispatch(sendMessageThunk({
+    postMessage({
       conversationId: conversation.id,
       message
-    }));
+    })
     setMessage("");
   }
   }>
