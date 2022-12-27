@@ -19,7 +19,7 @@ See the count of unread messages.
 <br/>
 Reaction to messages with emojis.
 
-# Contribution 🪜
+# Contribution 🧱
 If you're a front end developer who wants to improve the front end code, feel free to HMU.
 <br/>
 If you encountered any bugs, feel free to open an issue.
