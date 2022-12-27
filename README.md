@@ -1,5 +1,5 @@
 
-Thinking about some new features, some cleaning, some refactoring.
+# Morad Chat
+One of my friends suggested the name, it's kinda funny.
 <br/>
-<br/>
-I wish I've never started this project.
+![**Screenshot**](https://github.com/TheOfficialLOE/MoradChat/blob/main/screenshot.png)
