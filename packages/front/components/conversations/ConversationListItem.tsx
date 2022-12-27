@@ -11,6 +11,7 @@ const ConversationListItem = (props: {
   isOpen: boolean;
 }) => {
   const user = props.user;
+
   const {
     id,
     userA,
@@ -18,7 +19,9 @@ const ConversationListItem = (props: {
     lastMessage,
     unread,
   } = props.conversation;
-  const recipient = user.id === userA.id ? userA : userB;
+
+  const recipient = user.id === userA.id ? userB : userA;
+
   const dispatch = useAppDispatch();
 
   return <li className={`btn justify-start w-full h-20 ${
