@@ -17,7 +17,7 @@ Send/Receive messages.
 <br/>
 See the count of unread messages.
 <br/>
-Reaction to messages with emojis.
+React to messages with emojis.
 
 # Contribution 🧱
 If you're a front end developer who wants to improve the front end code, feel free to HMU.
