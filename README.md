@@ -3,10 +3,22 @@
 One of my friends suggested the name, it's kinda funny.
 <br/>
 <br/>
-BTW, here's a screenshot from the app:
+Anyway, here's a screenshot from the app:
 <br/>
 <br/>
 ![**Screenshot**](https://github.com/TheOfficialLOE/MoradChat/blob/main/screenshot.png)
+
+# Running the project ▶️
+```bash
+# install dependencies
+$ yarn # Or npm install
+# serve back end with hot reload at localhost:3001
+$ nx serve api
+# serve front end with hot reload at localhost:3000
+$ nx serve front
+# serve the whole project!
+$ nx run-many --target=serve
+```
 
 # Features ⚙
 This app is primary focusing on private messaging.
