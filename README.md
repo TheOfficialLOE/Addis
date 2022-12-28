@@ -1,5 +1,9 @@
 
+
 <div align="center">
-# Morad chat
-test
+
+# Morad Chat
+An instant messaging app, written in Node.js and Next.js.
+
+![screenshot](screenshot.png "screenshot")
 </div>
