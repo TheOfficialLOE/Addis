@@ -9,6 +9,7 @@ Anyway, here's a screenshot from the app:
 ![**Screenshot**](https://github.com/TheOfficialLOE/MoradChat/blob/main/screenshot.png)
 
 # Running the project ▶️
+This project is scaffolded with Nx as monorepo.
 ```bash
 # install dependencies
 $ yarn # Or npm install
