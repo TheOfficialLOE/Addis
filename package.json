@@ -1,5 +1,5 @@
 {
-  "name": "morad-chat",
+  "name": "addis",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,15 +7,15 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TheOfficialLOE/MoradChat.git"
+    "url": "git+https://github.com/TheOfficialLOE/Addis.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/TheOfficialLOE/MoradChat/issues"
+    "url": "https://github.com/TheOfficialLOE/Addis/issues"
   },
-  "homepage": "https://github.com/TheOfficialLOE/MoradChat#readme",
+  "homepage": "https://github.com/TheOfficialLOE/Addis#readme",
   "dependencies": {
     "@charkour/react-reactions": "^0.11.0",
     "@nestjs/common": "^9.0.0",

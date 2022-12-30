@@ -2,7 +2,7 @@
 
 <div align="center">
 
-# Morad Chat
+# Addis
 An instant messaging app. Built on top of Node.js and Next.js.
 
 ![screenshot](screenshot.png "screenshot")
