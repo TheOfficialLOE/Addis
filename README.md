@@ -9,8 +9,6 @@ An instant messaging app. Built on top of Node.js and Next.js.
 
 In lots of chat application, I kept encountering the lack of features like seen status and count of unread messages, so I decided to build my own.
 
-Btw, one of my friends suggested the name, it's kinda funny.
-
 </div>
 
 ## Getting Started
