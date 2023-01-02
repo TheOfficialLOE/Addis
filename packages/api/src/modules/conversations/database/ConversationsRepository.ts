@@ -37,6 +37,9 @@ export class ConversationsRepository
         ]},
       },
       {
+        $sort: { "messages.sentAt": -1 }
+      },
+      {
         $lookup: {
           from: "users",
           localField: "userA",
