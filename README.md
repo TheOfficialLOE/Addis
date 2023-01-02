@@ -1,15 +1,24 @@
-
-
-<div align="center">
-
 # Addis
-An instant messaging app. Built on top of Node.js and Next.js.
 
-![screenshot](screenshot.png "screenshot")
+In many chat applications, I kept encountering the lack of features like seen status and count of unread messages, and I was curious how it should be implemented, so that's why I decided to build my own.
 
-In lots of chat application, I kept encountering the lack of features like seen status and count of unread messages, so I decided to build my own.
+## Stack
+* [![Node][Node.js]][Node-url]
+* [![Nest][Nest.js]][Nest-url]
+* [![Mongo][MongoDB]][Mongo-url]
+* [![Next][Next.js]][Next-url]
+* [![Tailwind][Tailwind]][Tailwind-url]
+* [![Redux][Redux]][Redux-url]
 
-</div>
+
+## Key Features
+* OTP Authentication
+* Send/Receive messages instantly
+* See the last message sent
+* See seen status
+* See the count of unread messages per conversation
+* React to the messages with emojis
+
 
 ## Getting Started
 The project is scaffolded with [Nx.js](https://nx.dev/) as a monorepo.
@@ -20,23 +29,23 @@ yarn # or just npm install
 
 # run the entire project
 nx run-many --target=serve
+
+# run front dev server
+nx serve front # port 3000
+
+# run front api server
+nx serve api # port 3001
 ```
+## Screenshots
 
-to see detailed instructions on how to serve a single repo, refer to the relevant repo.
+<div align="center">
 
-## Key Features
-* Send/Receive messages instantly.
-* See seen status.
-* See the count of unread messages per conversation.
-* React to the messages with emojis.
+![auth-1](screenshots/auth-1.png "screenshot")
+![auth-2](screenshots/auth-2.png "screenshot")
+![conversations](screenshots/conversations.png "screenshot")
 
-## Stack
-* [![Node][Node.js]][Node-url]
-* [![Nest][Nest.js]][Nest-url]
-* [![Mongo][MongoDB]][Mongo-url]
-* [![Next][Next.js]][Next-url]
-* [![Tailwind][Tailwind]][Tailwind-url]
-* [![Redux][Redux]][Redux-url]
+
+</div>
 
 ## Contributing
 
